@@ -1,0 +1,19 @@
+﻿@using Store.Domain.Dtoes.Login
+@model RegisterDto
+
+@{
+    ViewData["Title"] = "پایان ثبت نام";
+}
+
+<div style="font-family : yekan;text-align:center" class="alert alert-success">
+    <h2>@Model.UserName عزیز !</h2>
+    <p>ثبت نام انجام شد ایمیل تاییدیه ارسال شد "@Model.Email"</p>
+    <p>شما به صفحه ورود هدایت میشوید</p>
+
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("Login", "Login")';
+    }, 5000); // 5 second
+</script>

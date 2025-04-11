@@ -1,0 +1,57 @@
+﻿@using Store.Domain.Dtoes.Login
+@model ResetPasswordDto
+
+@{
+    ViewData["Title"] = "بازیابی کلمه عبور";
+}
+
+<nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">فروشگاه آترین</a></li>
+        <li class="breadcrumb-item active" aria-current="page">بازیابی کلمه عبور</li>
+    </ul>
+</nav>
+
+<main class="client-page">
+    <div class="container-content">
+        @if (ViewBag.IsSuccess != null)
+        {
+            <div class="alert alert-success">
+                <p class="help-block">عملیات با موفقیت انجام شد</p>
+            </div>
+
+            <script>
+                setTimeout(function () {
+                window.location.href = '@Url.Action("Login", "Login")';
+                }, 4000); // 4 second
+            </script>
+        }
+        <header><h2> بازیابی کلمه عبور </h2></header>
+
+        <div class="form-layer">
+
+            <form method="post">
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                    <input value="@Model.Email" name="Email" type="text" class="form-control" aria-describedby="email-address" readonly>
+                </div>
+                <br />
+                <div class="input-group">
+                    <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password">
+                </div>
+                <span asp-validation-for="Password"></span>
+                <div class="input-group">
+                    <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
+                    <input asp-for="RePassword" type="password" class="form-control" placeholder="تکرار رمز عبور " aria-describedby="password">
+                </div>
+                <span asp-validation-for="RePassword"></span>
+                <div>
+                    <button asp-controller="Login" asp-action="ResetPass" class="btn btn-success"> ثبت تغییرات </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>

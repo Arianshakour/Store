@@ -1,0 +1,10 @@
+﻿@using Store.Domain.Dtoes.Login
+@model RegisterDto
+
+<div style="direction: rtl; padding: 20px">
+    <h2>@Model.UserName عزیز !</h2>
+    <p>با تشکر از ثبت نام شما در تاپ لرن ، جهت ادامه کار میبایست حساب کاربری خود را فعال کنید</p>
+    <p>
+        <a href="http://localhost:5265/Login/ActiveAccount/@Model.ActiveCode">فعالسازی حساب کاربری</a>
+    </p>
+</div>
