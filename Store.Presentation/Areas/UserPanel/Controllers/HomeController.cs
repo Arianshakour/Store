@@ -36,6 +36,7 @@ namespace Store.Presentation.Areas.UserPanel.Controllers
                 return View();
             }
             var currentUser = _userService.GetUserForEdit(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0"));
+            //var currentUser = _userService.GetUserForEdit(edit.Id);
             if (edit.Email != currentUser.Email && _userService.IsExistEmail(edit.Email))
             {
                 ModelState.AddModelError("Email", "ایمیل معتبر نیست");
