@@ -20,6 +20,6 @@ namespace Store.Domain.Entities
         public string? UserAvatar { get; set; }
 
         public List<UserRole> userRoles { get; set; }
-
+        public List<Wallet> wallets { get; set; }
     }
 }
