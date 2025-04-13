@@ -1,0 +1,34 @@
+﻿@using Store.Domain.Common.Date
+@using Store.Domain.Dtoes.UserPanel
+@model List<ListWalletDto>
+
+<table class="table table-bordered">
+    <tr>
+        <th>مبلغ</th>
+        <th>تاریخ</th>
+        <th>نوع تراکنش</th>
+        <th>شرح</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Amount.ToString("#,0 تومان")</td>
+            <td>
+                @item.DateTime.ToShamsi()
+            </td>
+            <td>
+                @if (item.Type == 1)
+                {
+                    <p class="text-success">واریز به حساب</p>
+                }
+                else
+                {
+                    <p class="text-danger">برداشت از حساب</p>
+                }
+            </td>
+            <td>
+                @item.Description
+            </td>
+        </tr>
+    }
+</table>

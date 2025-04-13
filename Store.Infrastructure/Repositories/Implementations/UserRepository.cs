@@ -22,6 +22,8 @@ namespace Store.Infrastructure.Repositories.Implementations
             _context.Users.Add(user);
         }
 
+        
+
         public User? GetUser(string email, string pass)
         {
             return _context.Users.FirstOrDefault(x => x.Email == email && x.Password == pass);
@@ -65,6 +67,24 @@ namespace Store.Infrastructure.Repositories.Implementations
         public void UpdateUser(User user)
         {
             _context.Users.Update(user);
+        }
+
+        public List<int> VariziBeHesab(int id)
+        {
+            return _context.Wallets.Where(x => x.UserId == id && x.TypeId == 1 && x.IsPay == true)
+                .Select(w => w.Amount).ToList();
+            //select Amount from wallet where userid=x and typeid=واریز and ispay = true
+        }
+        public List<int> BardashtAzHesab(int id)
+        {
+            return _context.Wallets.Where(x => x.UserId == id && x.TypeId == 2)
+                .Select(w => w.Amount).ToList();
+            //select Amount from wallet where userid=x and typeid=برداشت
+        }
+
+        public List<Wallet> GetWallets(int id)
+        {
+            return _context.Wallets.Where(x => x.UserId == id && x.IsPay == true).ToList();
         }
     }
 }

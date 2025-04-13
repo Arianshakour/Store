@@ -65,6 +65,8 @@ namespace Store.Application.Services.Implementations
             _userRepository.Save();
         }
 
+        
+
         public SideBarUserPanelDto GetSideBarUserPanelData(int id)
         {
             var user = _userRepository.GetUserById(id);
@@ -124,6 +126,13 @@ namespace Store.Application.Services.Implementations
                 UserAvatar = user.UserAvatar
             };
         }
+        public int GetMojodiWallet(int id)
+        {
+            var varizi = _userRepository.VariziBeHesab(id);
+            var bardasht = _userRepository.BardashtAzHesab(id);
+            var mojodi = varizi.Sum() - bardasht.Sum();
+            return mojodi;
+        }
 
         public InformationUserDto GetUserInformation(int id)
         {
@@ -137,7 +146,7 @@ namespace Store.Application.Services.Implementations
                 UserName = user.UserName,
                 Email = user.Email,
                 CreateOn = user.CreateOn,
-                Wallet = 0
+                Wallet = GetMojodiWallet(id)
             };
         }
 
@@ -217,6 +226,26 @@ namespace Store.Application.Services.Implementations
             user.UserAvatar = edit.UserAvatar;
             _userRepository.UpdateUser(user);
             _userRepository.Save();
+        }
+
+        public ChargeWalletDto GetWallet(int id)
+        {
+            return new ChargeWalletDto()
+            {
+                Balance = GetMojodiWallet(id)
+            };
+        }
+
+        public List<ListWalletDto> GetWalletUser(int id)
+        {
+            var wallets = _userRepository.GetWallets(id);
+            return wallets.Select(x => new ListWalletDto()
+            {
+                Amount = x.Amount,
+                DateTime = x.CreateDate,
+                Description = x.Description,
+                Type = x.TypeId
+            }).ToList();
         }
     }
 }

@@ -23,7 +23,7 @@
                     <li><a href="/UserPanel"> مشاهده حساب کابری </a></li>
                     <li><a asp-area="UserPanel" asp-controller="Home" asp-action="EditProfile" asp-route-id="@Model.Id"> ویرایش حساب کابری </a></li>
                     <li><a asp-area="UserPanel" asp-controller="Home" asp-action="ChangePass" asp-route-id="@Model.Id"> تغییر رمز عبور </a></li>
-                    <li><a href=""> کیف پول شما </a></li>
+                    <li><a asp-area="UserPanel" asp-controller="Home" asp-action="Wallet" asp-route-id="@Model.Id"> کیف پول شما </a></li>
                     <li><a href=""> تنظیمات حساب کاربری </a></li>
                     <li><a asp-area="" asp-controller="Login" asp-action="Logout"> خروج از حساب کاربری </a></li>
                 </ul>

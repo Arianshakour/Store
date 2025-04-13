@@ -25,5 +25,9 @@ namespace Store.Application.Services.Interfaces
         ChangePassDto GetUserForChangePass(int id);
         void ChangePassUser(ChangePassDto change);
         bool IsCorrectPass(int id, string pass);
+        //wallet
+        int GetMojodiWallet(int id);
+        ChargeWalletDto GetWallet(int id);
+        List<ListWalletDto> GetWalletUser(int id);
     }
 }

@@ -19,5 +19,8 @@ namespace Store.Infrastructure.Repositories.Interfaces
         void UpdateUser(User user);
         User? GetUserByActiveCode(string code);
         User? GetUserByUserName(string username);
+        List<int> VariziBeHesab(int id);
+        List<int> BardashtAzHesab(int id);
+        List<Wallet> GetWallets(int id);
     }
 }

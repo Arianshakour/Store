@@ -71,5 +71,15 @@ namespace Store.Presentation.Areas.UserPanel.Controllers
             _userService.ChangePassUser(change);
             return RedirectToAction("Index");
         }
+        public IActionResult Wallet(int id)
+        {
+            var model = _userService.GetWallet(id);
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Wallet(ChargeWalletDto charge)
+        {
+            return View();
+        }
     }
 }
