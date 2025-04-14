@@ -1,6 +1,6 @@
 ﻿@using Store.Domain.Common.Date
-@using Store.Domain.Dtoes.UserPanel
-@model List<ListWalletDto>
+@using Store.Domain.ViewModels
+@model WalletViewModel
 
 <table class="table table-bordered">
     <tr>
@@ -9,15 +9,15 @@
         <th>نوع تراکنش</th>
         <th>شرح</th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.walletList)
     {
         <tr>
             <td>@item.Amount.ToString("#,0 تومان")</td>
             <td>
-                @item.DateTime.ToShamsi()
+                @item.CreateDate.ToShamsi()
             </td>
             <td>
-                @if (item.Type == 1)
+                @if (item.TypeId == 1)
                 {
                     <p class="text-success">واریز به حساب</p>
                 }

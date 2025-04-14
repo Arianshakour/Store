@@ -79,7 +79,12 @@ namespace Store.Presentation.Areas.UserPanel.Controllers
         [HttpPost]
         public IActionResult Wallet(ChargeWalletDto charge)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            _userService.AddWallet(charge);
+            return RedirectToAction("Index");
         }
     }
 }

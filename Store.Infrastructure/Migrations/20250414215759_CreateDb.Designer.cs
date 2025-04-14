@@ -12,8 +12,8 @@ using Store.Infrastructure.Context;
 namespace Store.Infrastructure.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20250411213607_AddWalletTabless")]
-    partial class AddWalletTabless
+    [Migration("20250414215759_CreateDb")]
+    partial class CreateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,14 +131,11 @@ namespace Store.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("walletTypeTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("WalletId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TypeId");
 
-                    b.HasIndex("walletTypeTypeId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Wallets");
                 });
@@ -182,21 +179,21 @@ namespace Store.Infrastructure.Migrations
 
             modelBuilder.Entity("Store.Domain.Entities.Wallet", b =>
                 {
+                    b.HasOne("Store.Domain.Entities.WalletType", "WalletType")
+                        .WithMany("wallets")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Store.Domain.Entities.User", "user")
                         .WithMany("wallets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Store.Domain.Entities.WalletType", "walletType")
-                        .WithMany("wallets")
-                        .HasForeignKey("walletTypeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("WalletType");
 
                     b.Navigation("user");
-
-                    b.Navigation("walletType");
                 });
 
             modelBuilder.Entity("Store.Domain.Entities.Role", b =>

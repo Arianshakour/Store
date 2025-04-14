@@ -19,5 +19,14 @@ namespace Store.Infrastructure.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<WalletType> WalletTypes { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Wallet>()
+                .HasOne(w => w.walletType)
+                .WithMany(wt => wt.wallets)
+                .HasForeignKey(w => w.TypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
     }
 }

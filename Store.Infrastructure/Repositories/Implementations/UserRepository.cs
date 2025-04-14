@@ -86,5 +86,10 @@ namespace Store.Infrastructure.Repositories.Implementations
         {
             return _context.Wallets.Where(x => x.UserId == id && x.IsPay == true).ToList();
         }
+
+        public void AddWallet(Wallet wallet)
+        {
+            _context.Wallets.Add(wallet);
+        }
     }
 }

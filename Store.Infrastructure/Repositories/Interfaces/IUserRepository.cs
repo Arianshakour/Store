@@ -22,5 +22,6 @@ namespace Store.Infrastructure.Repositories.Interfaces
         List<int> VariziBeHesab(int id);
         List<int> BardashtAzHesab(int id);
         List<Wallet> GetWallets(int id);
+        void AddWallet(Wallet wallet);
     }
 }

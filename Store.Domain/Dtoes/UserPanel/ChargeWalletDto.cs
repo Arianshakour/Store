@@ -9,6 +9,7 @@ namespace Store.Domain.Dtoes.UserPanel
 {
     public class ChargeWalletDto
     {
+        public int UserId { get; set; }
         [Display(Name = "موجودی")]
         public int Balance { get; set; }
         [Display(Name = "مبلغ")]

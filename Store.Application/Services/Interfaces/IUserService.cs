@@ -1,6 +1,7 @@
 ﻿using Store.Domain.Dtoes.Login;
 using Store.Domain.Dtoes.UserPanel;
 using Store.Domain.Entities;
+using Store.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Store.Application.Services.Interfaces
         //wallet
         int GetMojodiWallet(int id);
         ChargeWalletDto GetWallet(int id);
-        List<ListWalletDto> GetWalletUser(int id);
+        WalletViewModel GetWalletUser(int id);
+        void AddWallet(ChargeWalletDto charge);
     }
 }

@@ -12,11 +12,6 @@ namespace Store.Domain.Entities
     {
         [Key]
         public int WalletId { get; set; }
-
-        [Display(Name = "نوع تراکنش")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int TypeId { get; set; }
-        [ForeignKey("User")]
         //behtare ino bezari age ye moqe be soorat automat tashkhis nade ba in tashkhis mide foreign key ra
         //nokte mohem
         //age esm filde inja ba jadval asli yki bashe niazi be in attribute bis mese TypeId
@@ -42,6 +37,12 @@ namespace Store.Domain.Entities
         //be wallet be cheshme tarakonesh negah kon pas yani ye user listi az tarakonesh haro dare
         public User user { get; set; }
         //az tarafi ya on tarakonesh variz boode ya bardasht pas ydone hast
+
+        [ForeignKey(nameof(WalletType))]
+        [Display(Name = "نوع تراکنش")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int TypeId { get; set; }
+
         public WalletType walletType { get; set; }
     }
 }

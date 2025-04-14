@@ -128,14 +128,11 @@ namespace Store.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("walletTypeTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("WalletId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TypeId");
 
-                    b.HasIndex("walletTypeTypeId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Wallets");
                 });
@@ -179,15 +176,15 @@ namespace Store.Infrastructure.Migrations
 
             modelBuilder.Entity("Store.Domain.Entities.Wallet", b =>
                 {
-                    b.HasOne("Store.Domain.Entities.User", "user")
+                    b.HasOne("Store.Domain.Entities.WalletType", "walletType")
                         .WithMany("wallets")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Store.Domain.Entities.WalletType", "walletType")
+                    b.HasOne("Store.Domain.Entities.User", "user")
                         .WithMany("wallets")
-                        .HasForeignKey("walletTypeTypeId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

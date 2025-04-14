@@ -5,10 +5,12 @@ using Store.Domain.Common.Security;
 using Store.Domain.Dtoes.Login;
 using Store.Domain.Dtoes.UserPanel;
 using Store.Domain.Entities;
+using Store.Domain.ViewModels;
 using Store.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -232,20 +234,41 @@ namespace Store.Application.Services.Implementations
         {
             return new ChargeWalletDto()
             {
+                UserId = id,
                 Balance = GetMojodiWallet(id)
             };
         }
 
-        public List<ListWalletDto> GetWalletUser(int id)
+        public WalletViewModel GetWalletUser(int id)
         {
             var wallets = _userRepository.GetWallets(id);
-            return wallets.Select(x => new ListWalletDto()
+            return new WalletViewModel()
             {
-                Amount = x.Amount,
-                DateTime = x.CreateDate,
-                Description = x.Description,
-                Type = x.TypeId
-            }).ToList();
+                walletList = wallets
+            };
+            //return wallets.Select(x => new ListWalletDto()
+            //{
+            //    Amount = x.Amount,
+            //    DateTime = x.CreateDate,
+            //    Description = x.Description,
+            //    Type = x.TypeId
+            //}).ToList();
+        }
+
+        public void AddWallet(ChargeWalletDto charge)
+        {
+            var wal = new Wallet()
+            {
+                UserId = charge.UserId,
+                Amount = charge.Amount,
+                IsPay = false,
+                CreateDate =DateTime.Now,
+                TypeId = 1,
+                Description = "شارژ حساب"
+            };
+            _userRepository.AddWallet(wal);
+            _userRepository.Save();
+
         }
     }
 }

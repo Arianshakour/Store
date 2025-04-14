@@ -12,8 +12,8 @@ using Store.Infrastructure.Context;
 namespace Store.Infrastructure.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20250411212702_AddWalletTables")]
-    partial class AddWalletTables
+    [Migration("20250414220922_CreateDbb")]
+    partial class CreateDbb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,16 +131,13 @@ namespace Store.Infrastructure.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("walletTypeTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("WalletId");
+
+                    b.HasIndex("TypeId");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("walletTypeTypeId");
-
-                    b.ToTable("Wallet");
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("Store.Domain.Entities.WalletType", b =>
@@ -158,7 +155,7 @@ namespace Store.Infrastructure.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("WalletType");
+                    b.ToTable("WalletTypes");
                 });
 
             modelBuilder.Entity("Store.Domain.Entities.UserRole", b =>
@@ -182,15 +179,15 @@ namespace Store.Infrastructure.Migrations
 
             modelBuilder.Entity("Store.Domain.Entities.Wallet", b =>
                 {
-                    b.HasOne("Store.Domain.Entities.User", "user")
+                    b.HasOne("Store.Domain.Entities.WalletType", "walletType")
                         .WithMany("wallets")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Store.Domain.Entities.WalletType", "walletType")
+                    b.HasOne("Store.Domain.Entities.User", "user")
                         .WithMany("wallets")
-                        .HasForeignKey("walletTypeTypeId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
