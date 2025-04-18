@@ -1,0 +1,67 @@
+﻿@using Store.Domain.Common.Date
+@using Store.Domain.ViewModels
+@model UserViewModel
+
+
+<div class="card">
+    <div class="body table-responsive">
+        @if (Model != null && Model.userList != null && Model.userList.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>تصویر</th>
+                        <th>ایدی</th>
+                        <th>نام کاربری</th>
+                        <th>ایمیل</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ عضویت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.userList)
+                    {
+                        <tr>
+                            <td>
+                                <img src="/SiteQaleb/UserAvatar/@item.UserAvatar" class="thumbnail" style="max-width: 120px" />
+                            </td>
+                            <td>@item.Id</td>
+                            <td>@item.UserName</td>
+                            <td>@item.Email</td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <div class="badge col-green">فعال</div>
+                                }
+                                else
+                                {
+                                    <div class="badge col-red">غیر فعال</div>
+                                }
+                            </td>
+                            <td>
+                                @item.CreateOn.ToShamsi()
+                            </td>
+                            <td>
+                                <a asp-action="Update" class="text-warning" asp-route-id="@item.Id">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info w-100 text-center" style="text-align:center">
+                کاربری یافت نشد
+            </div>
+        }
+    </div>
+</div>
+
+<div id="pager">
+    <partial name="~/Areas/Admin/Views/Home/_pager.cshtml" />
+</div>

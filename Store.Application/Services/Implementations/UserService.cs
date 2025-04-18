@@ -2,6 +2,7 @@
 using Store.Domain.Common.Convertors;
 using Store.Domain.Common.Generators;
 using Store.Domain.Common.Security;
+using Store.Domain.Dtoes.AdminPanel;
 using Store.Domain.Dtoes.Login;
 using Store.Domain.Dtoes.UserPanel;
 using Store.Domain.Entities;
@@ -269,6 +270,45 @@ namespace Store.Application.Services.Implementations
             _userRepository.AddWallet(wal);
             _userRepository.Save();
 
+        }
+
+        public UserViewModel GetUsers(string searchValue, int page, int pageSize)
+        {
+            var data = _userRepository.GetUsers(searchValue);
+            int dataCount = data.Count();
+            return new UserViewModel()
+            {
+                userList = data.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                pager = new Pager(dataCount,page,pageSize)
+            };
+        }
+
+        public void AddUserForm(CreateUserDto create)
+        {
+            create.ImageName = Guid.NewGuid() + Path.GetExtension(create.imgUp.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/SiteQaleb/UserAvatar", create.ImageName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                create.imgUp.CopyTo(stream);
+            }
+            //inja create.UserRoles yek listi az id haye role ha hast
+            //pas bayad bere to table UserRole beshine
+            //to list akharesh ke khob chon in userRoles list hast lazeme
+            //goftam be ezaye har role id ke dari boro to table UserRole ydone jadid besaz
+            var userRoles = create.UserRoles.Select(roleId => new UserRole { RoleId = roleId }).ToList();
+            var user = new User()
+            {
+                UserName = create.UserName,
+                Email = create.Email,
+                ActiveCode = NameGenerator.GenerateUniqCode(),
+                Password = PasswordHelper.EncodePasswordMd5(create.Password),
+                IsActive = true,
+                CreateOn = DateTime.Now,
+                UserAvatar = create.ImageName,
+                userRoles = userRoles
+            };
+            _userRepository.Add(user);
+            _userRepository.Save();
         }
     }
 }

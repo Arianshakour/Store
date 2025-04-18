@@ -23,5 +23,8 @@ namespace Store.Infrastructure.Repositories.Interfaces
         List<int> BardashtAzHesab(int id);
         List<Wallet> GetWallets(int id);
         void AddWallet(Wallet wallet);
+
+
+        List<User> GetUsers(string searchValue);
     }
 }

@@ -1,1 +1,19 @@
-﻿<h1>Index Page</h1>
+﻿@using Store.Domain.ViewModels
+@model UserViewModel
+
+@{
+    ViewData["Title"] = "لیست کاربران";
+}
+<h2>لیست کاربران</h2>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <a type="button" id="createBtn" asp-area="admin" asp-controller="Home" asp-action="Create" class="btn btn-primary">افزودن</a>
+
+    <form method="post">
+        <input class="form-control" name="searchValue" placeholder="عبارت مورد نظر را برای جستجو وارد کنید ..." id="Search" />
+        <button asp-area="admin" asp-controller="Home" asp-action="Index" class="btn btn-primary">جستجو</button>
+    </form>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <partial name="~/Areas/Admin/Views/Home/_gridUser.cshtml" />
+</div>

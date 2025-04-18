@@ -11,11 +11,13 @@ namespace Store.Domain.ViewModels
     {
         public User user { get; set; }
         public List<User> userList { get; set; }
+        public Pager pager { get; set; }
 
         public UserViewModel()
         {
             user = new User();
             userList = new List<User>();
+            pager = new Pager();
         }
     }
 }

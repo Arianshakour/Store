@@ -91,5 +91,18 @@ namespace Store.Infrastructure.Repositories.Implementations
         {
             _context.Wallets.Add(wallet);
         }
+
+        public List<User> GetUsers(string searchValue)
+        {
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                return _context.Users.Where(x => x.UserName.Contains(searchValue) || x.Email.Contains(searchValue))
+                    .OrderByDescending(x => x.Id).ToList();
+            }
+            else
+            {
+                return _context.Users.OrderByDescending(x => x.Id).ToList();
+            }
+        }
     }
 }

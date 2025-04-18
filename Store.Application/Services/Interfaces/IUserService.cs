@@ -1,4 +1,5 @@
-﻿using Store.Domain.Dtoes.Login;
+﻿using Store.Domain.Dtoes.AdminPanel;
+using Store.Domain.Dtoes.Login;
 using Store.Domain.Dtoes.UserPanel;
 using Store.Domain.Entities;
 using Store.Domain.ViewModels;
@@ -31,5 +32,9 @@ namespace Store.Application.Services.Interfaces
         ChargeWalletDto GetWallet(int id);
         WalletViewModel GetWalletUser(int id);
         void AddWallet(ChargeWalletDto charge);
+
+
+        UserViewModel GetUsers(string searchValue , int page , int pageSize);
+        void AddUserForm(CreateUserDto create);
     }
 }
