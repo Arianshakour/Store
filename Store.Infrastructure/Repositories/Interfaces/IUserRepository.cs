@@ -26,5 +26,6 @@ namespace Store.Infrastructure.Repositories.Interfaces
 
 
         List<User> GetUsers(string searchValue);
+        void DeleteUserRoles(int userId);
     }
 }

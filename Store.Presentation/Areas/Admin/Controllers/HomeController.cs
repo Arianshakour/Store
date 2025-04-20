@@ -41,15 +41,23 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            return View();
+            var model = _userService.GetUserForEditAdmin(id);
+            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            return View(model);
         }
-        //[HttpPost]
-        //public IActionResult Edit()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public IActionResult Edit(EditUserDto edit)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.RoleName = _permissionService.GetRole().roleList;
+                return View(edit);
+            }
+            _userService.EditUserAdmin(edit);
+            return RedirectToAction("Index");
+        }
         public IActionResult Delete()
         {
             return View();

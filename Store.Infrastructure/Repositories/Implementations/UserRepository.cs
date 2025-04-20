@@ -1,4 +1,5 @@
-﻿using Store.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Domain.Entities;
 using Store.Infrastructure.Context;
 using Store.Infrastructure.Repositories.Interfaces;
 using System;
@@ -41,7 +42,7 @@ namespace Store.Infrastructure.Repositories.Implementations
 
         public User? GetUserById(int id)
         {
-            return _context.Users.FirstOrDefault(x => x.Id == id);
+            return _context.Users.Include(x=>x.userRoles).ThenInclude(x=>x.role).FirstOrDefault(x => x.Id == id);
         }
 
         public User? GetUserByUserName(string username)
@@ -103,6 +104,16 @@ namespace Store.Infrastructure.Repositories.Implementations
             {
                 return _context.Users.OrderByDescending(x => x.Id).ToList();
             }
+        }
+
+        public void DeleteUserRoles(int userId)
+        {
+            var listUserRoles = _context.UserRoles.Where(ur => ur.UserId == userId).ToList();
+            foreach (var item in listUserRoles)
+            {
+                _context.UserRoles.Remove(item); 
+            }
+            _context.SaveChanges();
         }
     }
 }

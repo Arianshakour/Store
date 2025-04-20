@@ -43,7 +43,7 @@
                                 @item.CreateOn.ToShamsi()
                             </td>
                             <td>
-                                <a asp-action="Update" class="text-warning" asp-route-id="@item.Id">
+                                <a asp-area="admin" asp-controller="Home" asp-action="Edit" class="text-warning" asp-route-id="@item.Id">
                                     <i class="fa fa-pen"></i>
                                 </a>
                             </td>

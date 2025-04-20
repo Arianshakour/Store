@@ -1,0 +1,100 @@
+﻿@using Store.Domain.Dtoes.AdminPanel
+@model EditUserDto
+
+@{
+    ViewData["Title"] = "افزودن کاربر";
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row clearfix">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ImageName" />
+                        <div class="col-lg-8">
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="UserName" class="control-label"></label>
+                                        <input type="text" asp-for="UserName" class="form-control" readonly>
+                                        <span asp-validation-for="UserName"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input type="text" asp-for="Email" class="form-control" readonly>
+                                        <span asp-validation-for="Email"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="Password" class="control-label"></label>
+                                        <input type="password" asp-for="Password" class="form-control">
+                                        <p>در صورت نوشتن چیزی در این قسمت رمز عبور تغییر میکند</p>
+                                        <span asp-validation-for="Password"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="UserRoles" class="control-label"></label>
+                                        @foreach (var item in ViewBag.RoleName)
+                                        {
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="UserRoles" value="@item.RoleId" @((Model.UserRoles.Any(r => r == item.RoleId) ? "checked" : ""))>
+                                                    <span>@item.RoleTitle</span>
+                                                </label>
+                                            </div>
+                                        }
+                                        <span asp-validation-for="UserRoles"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" asp-area="Admin" asp-controller="Home" asp-action="Edit" class="btn btn-success m-l-15 waves-effect">ثبت</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <img id="imgAvatar" class="thumbnail" src="/SiteQaleb/UserAvatar/@Model.ImageName" />
+                                        <label asp-for="ImageName" class="control-label"></label>
+                                        <input type="file" asp-for="imgUp" id="imgUp" class="form-control">
+                                        <span asp-validation-for="imgUp"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script {
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imgAvatar').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgUp").change(function() {
+            readURL(this);
+        });
+    </script>
+}

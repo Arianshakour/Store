@@ -36,5 +36,7 @@ namespace Store.Application.Services.Interfaces
 
         UserViewModel GetUsers(string searchValue , int page , int pageSize);
         void AddUserForm(CreateUserDto create);
+        EditUserDto GetUserForEditAdmin(int id);
+        void EditUserAdmin(EditUserDto edit);
     }
 }

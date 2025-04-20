@@ -1,4 +1,5 @@
-﻿using Store.Application.Services.Interfaces;
+﻿using Microsoft.Win32;
+using Store.Application.Services.Interfaces;
 using Store.Domain.Common.Convertors;
 using Store.Domain.Common.Generators;
 using Store.Domain.Common.Security;
@@ -296,6 +297,12 @@ namespace Store.Application.Services.Implementations
             //to list akharesh ke khob chon in userRoles list hast lazeme
             //goftam be ezaye har role id ke dari boro to table UserRole ydone jadid besaz
             var userRoles = create.UserRoles.Select(roleId => new UserRole { RoleId = roleId }).ToList();
+            //injoori ham mishe nevesht mese paein bdoone LinQ
+            //var userRoles = new List<UserRole>();
+            //foreach (var roleId in create.UserRoles)
+            //{
+            //    userRoles.Add(new UserRole { RoleId = roleId });
+            //}
             var user = new User()
             {
                 UserName = create.UserName,
@@ -308,6 +315,78 @@ namespace Store.Application.Services.Implementations
                 userRoles = userRoles
             };
             _userRepository.Add(user);
+            _userRepository.Save();
+        }
+
+        public EditUserDto GetUserForEditAdmin(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return new EditUserDto()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                ImageName = user.UserAvatar,
+                UserRoles = user.userRoles.Select(x => x.RoleId).ToList()
+            };
+            //baraye userrole injoori ham mishe nevesht
+            //var userRoles = new List<int>();
+            //foreach (var item in user.userRoles)
+            //{
+            //    userRoles.Add(item.role.RoleId);
+            //}
+            //return new EditUserDto()
+            //{
+            //    Id = user.Id,
+            //    Email = user.Email,
+            //    UserName = user.UserName,
+            //    ImageName = user.UserAvatar,
+            //    UserRoles = userRoles
+            //};
+        }
+
+        public void EditUserAdmin(EditUserDto edit)
+        {
+            var user = _userRepository.GetUserById(edit.Id);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (!string.IsNullOrEmpty(edit.Password))
+            {
+                user.Password = PasswordHelper.EncodePasswordMd5(edit.Password);
+            }
+            if (edit.imgUp != null)
+            {
+                if (edit.ImageName != "Defult.jpg")
+                {
+                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/SiteQaleb/UserAvatar", edit.ImageName);
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+                edit.ImageName = Guid.NewGuid() + Path.GetExtension(edit.imgUp.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/SiteQaleb/UserAvatar", edit.ImageName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    edit.imgUp.CopyTo(stream);
+                }
+            }
+            user.UserAvatar = edit.ImageName;
+            //baraye Role ha bayad aval hame Role ha pak beshe badesh dobare insert beshe
+            _userRepository.DeleteUserRoles(user.Id);
+            //hala insert
+            user.userRoles = edit.UserRoles.Select(roleId => new UserRole
+            {
+                RoleId = roleId,
+                UserId = user.Id
+            }).ToList();
+            _userRepository.UpdateUser(user);
             _userRepository.Save();
         }
     }
