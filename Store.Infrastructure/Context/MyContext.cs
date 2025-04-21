@@ -26,7 +26,9 @@ namespace Store.Infrastructure.Context
                 .WithMany(wt => wt.wallets)
                 .HasForeignKey(w => w.TypeId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().HasQueryFilter(x => x.Dlt == false);
+            //in khat bala kole query haei ke toosh user boode ra ba in shart yki mikone
+            //age ino nakhai bayad to query ino bezari .IgnoreQueryFilters()
         }
-
     }
 }

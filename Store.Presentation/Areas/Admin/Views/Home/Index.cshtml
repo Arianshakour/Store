@@ -7,13 +7,77 @@
 <h2>لیست کاربران</h2>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
     <a type="button" id="createBtn" asp-area="admin" asp-controller="Home" asp-action="Create" class="btn btn-primary">افزودن</a>
-
+    <a id="showDeletedButton" class="btn btn-warning" onclick="showDeletedUsers()"> نمایش کاربران حذف شده </a>
+    <a id="backToUsersButton" class="btn btn-primary" onclick="showAllUsers()" style="display: none;"> بازگشت به لیست کاربران </a>
     <form method="post">
         <input class="form-control" name="searchValue" placeholder="عبارت مورد نظر را برای جستجو وارد کنید ..." id="Search" />
-        <button asp-area="admin" asp-controller="Home" asp-action="Index" class="btn btn-primary">جستجو</button>
+        @* <button type="button" asp-area="admin" asp-controller="Home" asp-action="Index" class="btn btn-primary">جستجو</button> *@
+        <button type="button" onclick="SearchBtn()" class="btn btn-primary">جستجو</button>
     </form>
 </div>
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+<div id="gridUser" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
     <partial name="~/Areas/Admin/Views/Home/_gridUser.cshtml" />
 </div>
+<div id="gridDeletedUser" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4" style="display:none;">
+    <partial name="~/Areas/Admin/Views/Home/_gridUser.cshtml" />
+</div>
+
+@section script
+{
+    <script>
+
+        function showDeletedUsers() {
+            var del = 1;
+            var url = '@Url.Action("Index", "Home", "admin")';
+            $.ajax({
+                url: url,
+                data: { pageSize:4, isDel: del },
+                type: "Get",
+                success: function (result) {
+                    $("#gridUser").hide();
+                    $("#gridDeletedUser").html(result);
+                    $("#gridDeletedUser").show();
+                    $("#showDeletedButton").hide();
+                    $("#createBtn").hide();
+                    $("#backToUsersButton").show();
+                }
+            });
+        }
+
+        function showAllUsers() {
+            $.ajax({
+                url: '/admin/Home/Index',
+                type: 'GET',
+                success: function (result) {
+                    $("#gridUser").empty();
+                    $("#gridUser").html(result);
+                    $("#gridDeletedUser").hide();
+                    $("#gridUser").show();
+                    $("#createBtn").show();
+                    $("#showDeletedButton").show();
+                    $("#backToUsersButton").hide();
+                },
+            });
+        }
+        function SearchBtn(){
+            var del = ($("#showDeletedButton").is(":visible")) ? 0 : 1;
+            var search = $("#Search").val();
+            var url = '@Url.Action("Index", "Home", "admin")';
+            $.ajax({
+                url: url,
+                data: { searchValue : search ,pageSize:4, isDel: del },
+                type: "Get",
+                success: function (result) {
+                    if (del === 1) {
+                        $("#gridDeletedUser").empty();
+                        $("#gridDeletedUser").html(result);
+                    } else {
+                        $("#gridUser").empty();
+                        $("#gridUser").html(result);
+                    }
+                }
+            });
+        }
+    </script>
+}

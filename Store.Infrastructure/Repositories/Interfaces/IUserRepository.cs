@@ -25,7 +25,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
         void AddWallet(Wallet wallet);
 
 
-        List<User> GetUsers(string searchValue);
+        List<User> GetUsers(string searchValue, int isDel);
         void DeleteUserRoles(int userId);
     }
 }

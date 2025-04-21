@@ -273,9 +273,9 @@ namespace Store.Application.Services.Implementations
 
         }
 
-        public UserViewModel GetUsers(string searchValue, int page, int pageSize)
+        public UserViewModel GetUsers(string searchValue, int page, int pageSize, int isDel)
         {
-            var data = _userRepository.GetUsers(searchValue);
+            var data = _userRepository.GetUsers(searchValue, isDel);
             int dataCount = data.Count();
             return new UserViewModel()
             {
@@ -386,6 +386,51 @@ namespace Store.Application.Services.Implementations
                 RoleId = roleId,
                 UserId = user.Id
             }).ToList();
+            _userRepository.UpdateUser(user);
+            _userRepository.Save();
+        }
+
+        public DetailsUserDto GetUserForDetailsAdmin(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return new DetailsUserDto()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                ImageName = user.UserAvatar,
+                UserRoles = user.userRoles.Select(x => x.RoleId).ToList()
+            };
+        }
+
+        public DeleteUserDto GetUserForDeleteAdmin(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            return new DeleteUserDto()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                UserRoles = user.userRoles.Select(x => x.RoleId).ToList()
+            };
+        }
+
+        public void DeleteUserAdmin(DeleteUserDto delete)
+        {
+            var user = _userRepository.GetUserById(delete.Id);
+            if (user == null)
+            {
+                throw new NullReferenceException();
+            }
+            user.Dlt = true;
             _userRepository.UpdateUser(user);
             _userRepository.Save();
         }

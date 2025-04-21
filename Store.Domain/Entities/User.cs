@@ -18,6 +18,7 @@ namespace Store.Domain.Entities
         public bool IsActive { get; set; }
         public DateTime CreateOn { get; set; }
         public string? UserAvatar { get; set; }
+        public bool Dlt { get; set; }
 
         public List<UserRole> userRoles { get; set; }
         public List<Wallet> wallets { get; set; }

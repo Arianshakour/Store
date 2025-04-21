@@ -93,15 +93,25 @@ namespace Store.Infrastructure.Repositories.Implementations
             _context.Wallets.Add(wallet);
         }
 
-        public List<User> GetUsers(string searchValue)
+        public List<User> GetUsers(string searchValue, int isDel)
         {
             if (!string.IsNullOrEmpty(searchValue))
             {
+                if (isDel==1)
+                {
+                    return _context.Users.Where(x => x.UserName.Contains(searchValue) || x.Email.Contains(searchValue))
+                    .OrderByDescending(x => x.Id).IgnoreQueryFilters().Where(x=>x.Dlt==true).ToList();
+                }
                 return _context.Users.Where(x => x.UserName.Contains(searchValue) || x.Email.Contains(searchValue))
                     .OrderByDescending(x => x.Id).ToList();
             }
             else
             {
+                if (isDel == 1)
+                {
+                    return _context.Users.OrderByDescending(x => x.Id)
+                        .IgnoreQueryFilters().Where(x => x.Dlt == true).ToList();
+                }
                 return _context.Users.OrderByDescending(x => x.Id).ToList();
             }
         }

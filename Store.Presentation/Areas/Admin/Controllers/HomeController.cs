@@ -16,9 +16,13 @@ namespace Store.Presentation.Areas.Admin.Controllers
             _userService = userService;
             _permissionService = permissionService;
         }
-        public IActionResult Index(string searchValue, int page=1, int pageSize = 4)
+        public IActionResult Index(string searchValue, int page=1, int pageSize = 4,int isDel = 0)
         {
-            var model = _userService.GetUsers(searchValue,page,pageSize);
+            var model = _userService.GetUsers(searchValue,page,pageSize, isDel);
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("~/areas/admin/Views/home/_gridUser.cshtml", model);
+            }
             return View(model);
         }
         public IActionResult Create()
@@ -37,9 +41,11 @@ namespace Store.Presentation.Areas.Admin.Controllers
             _userService.AddUserForm(create);
             return RedirectToAction("Index");
         }
-        public IActionResult Details()
+        public IActionResult Details(int id)
         {
-            return View();
+            var model = _userService.GetUserForDetailsAdmin(id);
+            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            return View(model);
         }
         public IActionResult Edit(int id)
         {
@@ -58,14 +64,17 @@ namespace Store.Presentation.Areas.Admin.Controllers
             _userService.EditUserAdmin(edit);
             return RedirectToAction("Index");
         }
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
+            var model = _userService.GetUserForDeleteAdmin(id);
+            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            return View(model);
         }
-        //[HttpPost]
-        //public IActionResult Delete()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public IActionResult Delete(DeleteUserDto delete)
+        {
+            _userService.DeleteUserAdmin(delete);
+            return RedirectToAction("Index");
+        }
     }
 }

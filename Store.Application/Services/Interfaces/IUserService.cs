@@ -34,9 +34,12 @@ namespace Store.Application.Services.Interfaces
         void AddWallet(ChargeWalletDto charge);
 
 
-        UserViewModel GetUsers(string searchValue , int page , int pageSize);
+        UserViewModel GetUsers(string searchValue , int page , int pageSize,int isDel);
         void AddUserForm(CreateUserDto create);
         EditUserDto GetUserForEditAdmin(int id);
         void EditUserAdmin(EditUserDto edit);
+        DetailsUserDto GetUserForDetailsAdmin(int id);
+        DeleteUserDto GetUserForDeleteAdmin(int id);
+        void DeleteUserAdmin(DeleteUserDto delete);
     }
 }

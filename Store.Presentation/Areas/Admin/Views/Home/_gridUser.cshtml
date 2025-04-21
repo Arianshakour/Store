@@ -46,6 +46,12 @@
                                 <a asp-area="admin" asp-controller="Home" asp-action="Edit" class="text-warning" asp-route-id="@item.Id">
                                     <i class="fa fa-pen"></i>
                                 </a>
+                                <a asp-area="admin" asp-controller="Home" asp-action="Details" class="text-warning" asp-route-id="@item.Id">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a asp-area="admin" asp-controller="Home" asp-action="Delete" class="text-warning" asp-route-id="@item.Id">
+                                    <i class="fa fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     }
