@@ -29,6 +29,7 @@ namespace Store.Infrastructure.Context
             modelBuilder.Entity<User>().HasQueryFilter(x => x.Dlt == false);
             //in khat bala kole query haei ke toosh user boode ra ba in shart yki mikone
             //age ino nakhai bayad to query ino bezari .IgnoreQueryFilters()
+            modelBuilder.Entity<Role>().HasQueryFilter(x => x.Dlt == false);
         }
     }
 }

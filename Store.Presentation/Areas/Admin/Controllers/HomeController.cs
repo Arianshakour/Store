@@ -27,7 +27,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            ViewBag.RoleName = _permissionService.GetRoles().roleList;
             return View();
         }
         [HttpPost]
@@ -35,7 +35,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.RoleName = _permissionService.GetRole().roleList;
+                ViewBag.RoleName = _permissionService.GetRoles().roleList;
                 return View(create);
             }
             _userService.AddUserForm(create);
@@ -44,13 +44,13 @@ namespace Store.Presentation.Areas.Admin.Controllers
         public IActionResult Details(int id)
         {
             var model = _userService.GetUserForDetailsAdmin(id);
-            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            ViewBag.RoleName = _permissionService.GetRoles().roleList;
             return View(model);
         }
         public IActionResult Edit(int id)
         {
             var model = _userService.GetUserForEditAdmin(id);
-            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            ViewBag.RoleName = _permissionService.GetRoles().roleList;
             return View(model);
         }
         [HttpPost]
@@ -58,7 +58,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.RoleName = _permissionService.GetRole().roleList;
+                ViewBag.RoleName = _permissionService.GetRoles().roleList;
                 return View(edit);
             }
             _userService.EditUserAdmin(edit);
@@ -67,7 +67,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             var model = _userService.GetUserForDeleteAdmin(id);
-            ViewBag.RoleName = _permissionService.GetRole().roleList;
+            ViewBag.RoleName = _permissionService.GetRoles().roleList;
             return View(model);
         }
         [HttpPost]

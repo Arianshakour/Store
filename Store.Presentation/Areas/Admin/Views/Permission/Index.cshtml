@@ -1,0 +1,56 @@
+﻿@using Store.Domain.ViewModels
+@model RoleViewModel
+
+@{
+    ViewData["Title"] = "لیست نقش ها";
+}
+
+<h2>لیست نقش ها</h2>
+<br />
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <a type="button" id="createBtn" asp-area="admin" asp-controller="Permission" asp-action="Create" class="btn btn-primary">افزودن</a>
+</div>
+<br />
+
+<div>
+    <div class="card">
+        <div class="body table-responsive">
+            @if (Model != null && Model.roleList != null && Model.roleList.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ایدی</th>
+                            <th>نام نقش</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.roleList)
+                        {
+                            <tr>
+                                <td>@item.RoleId</td>
+                                <td>@item.RoleTitle</td>
+                                <td>
+                                    <a asp-area="admin" asp-controller="Permission" asp-action="Edit" class="text-warning" asp-route-id="@item.RoleId">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <a asp-area="admin" asp-controller="Permission" asp-action="Delete" class="text-warning" asp-route-id="@item.RoleId">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center" style="text-align:center">
+                    نقشی یافت نشد
+                </div>
+            }
+        </div>
+    </div>
+</div>

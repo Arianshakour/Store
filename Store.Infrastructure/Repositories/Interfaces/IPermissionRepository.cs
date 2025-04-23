@@ -10,5 +10,10 @@ namespace Store.Infrastructure.Repositories.Interfaces
     public interface IPermissionRepository
     {
         List<Role> GetRoles();
+        void AddRole(Role role);
+        Role? GetRole(int id);
+        void UpdateRole(Role role);
+        void DeleteRole(Role role);
+        void Save();
     }
 }

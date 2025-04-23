@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.Domain.Entities
+namespace Store.Domain.Dtoes.AdminPanel.Permission
 {
-    public class Role
+    public class EditPermissionDto
     {
-        [Key]
         public int RoleId { get; set; }
+        [Display(Name = "عنوان")]
+        [Required(ErrorMessage = "فیلد {0} نباید خالی باشد")]
         public string RoleTitle { get; set; }
-        public bool Dlt { get; set; }
-
-        public List<UserRole> userRoles { get; set; }
     }
 }

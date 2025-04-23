@@ -16,9 +16,35 @@ namespace Store.Infrastructure.Repositories.Implementations
         {
             _context = context;
         }
+
+        public void AddRole(Role role)
+        {
+            _context.Roles.Add(role);
+        }
+
+        public void DeleteRole(Role role)
+        {
+            _context.Roles.Remove(role);
+        }
+
+        public Role? GetRole(int id)
+        {
+            return _context.Roles.FirstOrDefault(x => x.RoleId == id);
+        }
+
         public List<Role> GetRoles()
         {
             return _context.Roles.ToList();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+        public void UpdateRole(Role role)
+        {
+            _context.Roles.Update(role);
         }
     }
 }
