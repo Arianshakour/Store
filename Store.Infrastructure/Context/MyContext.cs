@@ -19,6 +19,8 @@ namespace Store.Infrastructure.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<WalletType> WalletTypes { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Wallet>()

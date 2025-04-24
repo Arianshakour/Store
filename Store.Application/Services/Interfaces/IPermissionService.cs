@@ -17,5 +17,9 @@ namespace Store.Application.Services.Interfaces
         DeletePermissionDto GetRoleByIdForDelete(int id);
         void DeleteRole(DeletePermissionDto delete);
 
+        //permission
+        PermissionViewModel GetPermissions();
+        List<int> GetPermissionIdFromRoleId(int roleId);
+
     }
 }

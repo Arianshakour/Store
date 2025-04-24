@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace Store.Domain.Entities
 {
-    public class Role
+    public class RolePermission
     {
         [Key]
+        public int RPId { get; set; }
         public int RoleId { get; set; }
-        public string RoleTitle { get; set; }
-        public bool Dlt { get; set; }
+        public int PermissionId { get; set; }
 
-        public List<UserRole> userRoles { get; set; }
-        public List<RolePermission> rolePermissions { get; set; }
+
+        //relation
+        public Role role { get; set; }
+        public Permission permission { get; set; }
     }
 }

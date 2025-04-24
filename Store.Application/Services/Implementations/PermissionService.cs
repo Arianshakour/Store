@@ -21,9 +21,12 @@ namespace Store.Application.Services.Implementations
 
         public void AddRole(CreatePermissionDto create)
         {
+            var selectedPermission = create.SelectedPermission
+                .Select(permissionId => new RolePermission { PermissionId = permissionId }).ToList();
             var role = new Role()
             {
-                RoleTitle = create.RoleTitle
+                RoleTitle = create.RoleTitle,
+                rolePermissions = selectedPermission
             };
             _permissionRepository.AddRole(role);
             _permissionRepository.Save();
@@ -51,7 +54,8 @@ namespace Store.Application.Services.Implementations
             return new DeletePermissionDto()
             {
                 RoleId = role.RoleId,
-                RoleTitle = role.RoleTitle
+                RoleTitle = role.RoleTitle,
+                SelectedPermission = role.rolePermissions.Select(x => x.PermissionId).ToList()
             };
         }
 
@@ -65,7 +69,8 @@ namespace Store.Application.Services.Implementations
             return new EditPermissionDto()
             {
                 RoleId = role.RoleId,
-                RoleTitle = role.RoleTitle
+                RoleTitle = role.RoleTitle,
+                SelectedPermission = role.rolePermissions.Select(x => x.PermissionId).ToList()
             };
         }
 
@@ -86,8 +91,27 @@ namespace Store.Application.Services.Implementations
                 throw new NullReferenceException();
             }
             role.RoleTitle = edit.RoleTitle;
+            role.rolePermissions = edit.SelectedPermission.Select(permissionId => new RolePermission
+            {
+                RoleId = role.RoleId,
+                PermissionId = permissionId
+            }).ToList();
             _permissionRepository.UpdateRole(role);
             _permissionRepository.Save();
+        }
+
+        public PermissionViewModel GetPermissions()
+        {
+            var data = _permissionRepository.GetPermissions();
+            return new PermissionViewModel()
+            {
+                permissionList = data
+            };
+        }
+
+        public List<int> GetPermissionIdFromRoleId(int roleId)
+        {
+            return _permissionRepository.GetPermissionIdFromRoleId(roleId);
         }
     }
 }

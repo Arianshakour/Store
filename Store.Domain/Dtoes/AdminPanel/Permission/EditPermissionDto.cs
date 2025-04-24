@@ -13,5 +13,8 @@ namespace Store.Domain.Dtoes.AdminPanel.Permission
         [Display(Name = "عنوان")]
         [Required(ErrorMessage = "فیلد {0} نباید خالی باشد")]
         public string RoleTitle { get; set; }
+        [Display(Name = "دسترسی ها")]
+        [Required(ErrorMessage = "فیلد {0} نباید خالی باشد")]
+        public List<int> SelectedPermission { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Store.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Domain.Entities;
 using Store.Infrastructure.Context;
 using Store.Infrastructure.Repositories.Interfaces;
 using System;
@@ -27,9 +28,19 @@ namespace Store.Infrastructure.Repositories.Implementations
             _context.Roles.Remove(role);
         }
 
+        public List<int> GetPermissionIdFromRoleId(int roleId)
+        {
+            return _context.RolePermissions.Where(x => x.RoleId == roleId).Select(x => x.PermissionId).ToList();
+        }
+
+        public List<Permission> GetPermissions()
+        {
+            return _context.Permissions.ToList();
+        }
+
         public Role? GetRole(int id)
         {
-            return _context.Roles.FirstOrDefault(x => x.RoleId == id);
+            return _context.Roles.Include(x=>x.rolePermissions).FirstOrDefault(x => x.RoleId == id);
         }
 
         public List<Role> GetRoles()

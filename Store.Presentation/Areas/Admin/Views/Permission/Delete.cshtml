@@ -1,8 +1,11 @@
 ﻿@using Store.Domain.Dtoes.AdminPanel.Permission
+@using Store.Domain.Entities
 @model DeletePermissionDto
 
 @{
     ViewData["Title"] = "حذف نقش";
+    var permissions = ViewBag.pers as List<Permission>;
+    var selectedPermissions = ViewBag.selectedPers as List<int>;
 }
 
 <div class="row clearfix">
@@ -29,10 +32,45 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
+                            <h3>سطح دسترسی</h3>
+                            <br />
                             <div>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        #
+                                        @foreach (var item in permissions.Where(p => p.ParentId == null))
+                                        {
+                                            <div class="form-check form-check-radio">
+                                                <label>
+                                                    <input type="checkbox" disabled name="SelectedPermission" @((selectedPermissions.Any(p => p == item.PermissionId) ? "checked" : "")) value="@item.PermissionId">
+                                                    <span>@item.PermissionTitle</span>
+                                                </label>
+                                            </div>
+                                            @if (permissions.Any(p => p.ParentId == item.ParentId))
+                                            {
+                                                @foreach (var sub in permissions.Where(p => p.ParentId == item.PermissionId))
+                                                {
+                                                    <div class="form-check form-check-radio mr-3">
+                                                        <label>
+                                                            <input type="checkbox" disabled name="SelectedPermission" @((selectedPermissions.Any(p => p == sub.PermissionId) ? "checked" : "")) value="@sub.PermissionId">
+                                                            <span>@sub.PermissionTitle</span>
+                                                        </label>
+                                                    </div>
+                                                    @if (permissions.Any(p => p.ParentId == sub.ParentId))
+                                                    {
+                                                        @foreach (var sub2 in permissions.Where(p => p.ParentId == sub.PermissionId))
+                                                        {
+                                                            <div class="form-check form-check-radio mr-5">
+                                                                <label>
+                                                                    <input type="checkbox" disabled name="SelectedPermission" @((selectedPermissions.Any(p => p == sub2.PermissionId) ? "checked" : "")) value="@sub2.PermissionId">
+                                                                    <span>@sub2.PermissionTitle</span>
+                                                                </label>
+                                                            </div>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        <span asp-validation-for="SelectedPermission"></span>
                                     </div>
                                 </div>
                             </div>

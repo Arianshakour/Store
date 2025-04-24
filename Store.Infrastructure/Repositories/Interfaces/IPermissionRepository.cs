@@ -15,5 +15,10 @@ namespace Store.Infrastructure.Repositories.Interfaces
         void UpdateRole(Role role);
         void DeleteRole(Role role);
         void Save();
+
+        //Permission
+
+        List<Permission> GetPermissions();
+        List<int> GetPermissionIdFromRoleId(int roleId);
     }
 }

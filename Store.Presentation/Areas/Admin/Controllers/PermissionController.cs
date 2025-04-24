@@ -21,6 +21,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.pers = _permissionService.GetPermissions().permissionList;
             return View();
         }
         [HttpPost]
@@ -28,6 +29,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.pers = _permissionService.GetPermissions().permissionList;
                 return View(create);
             }
             _permissionService.AddRole(create);
@@ -35,6 +37,8 @@ namespace Store.Presentation.Areas.Admin.Controllers
         }
         public IActionResult Edit(int id)
         {
+            ViewBag.pers = _permissionService.GetPermissions().permissionList;
+            ViewBag.selectedPers = _permissionService.GetPermissionIdFromRoleId(id);
             var model = _permissionService.GetRoleByIdForEdit(id);
             return View(model);
         }
@@ -43,6 +47,8 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.pers = _permissionService.GetPermissions().permissionList;
+                ViewBag.selectedPers = _permissionService.GetPermissionIdFromRoleId(edit.RoleId);
                 return View(edit);
             }
             _permissionService.UpdateRole(edit);
@@ -50,6 +56,8 @@ namespace Store.Presentation.Areas.Admin.Controllers
         }
         public IActionResult Delete(int id)
         {
+            ViewBag.pers = _permissionService.GetPermissions().permissionList;
+            ViewBag.selectedPers = _permissionService.GetPermissionIdFromRoleId(id);
             var model = _permissionService.GetRoleByIdForDelete(id);
             return View(model);
         }
