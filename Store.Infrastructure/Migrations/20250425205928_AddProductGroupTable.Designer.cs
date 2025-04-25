@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using Store.Infrastructure.Context;
 namespace Store.Infrastructure.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20250425205928_AddProductGroupTable")]
+    partial class AddProductGroupTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,64 +45,6 @@ namespace Store.Infrastructure.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("Store.Domain.Entities.Product", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Dlt")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Mojodi")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SubGroup")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Tags")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("SubGroup");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Store.Domain.Entities.ProductGroup", b =>
@@ -296,31 +241,6 @@ namespace Store.Infrastructure.Migrations
                         .HasForeignKey("ParentId");
                 });
 
-            modelBuilder.Entity("Store.Domain.Entities.Product", b =>
-                {
-                    b.HasOne("Store.Domain.Entities.ProductGroup", "productGroup")
-                        .WithMany("group")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Store.Domain.Entities.ProductGroup", "subProductGroup")
-                        .WithMany("subGroup")
-                        .HasForeignKey("SubGroup");
-
-                    b.HasOne("Store.Domain.Entities.User", "user")
-                        .WithMany("products")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("productGroup");
-
-                    b.Navigation("subProductGroup");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Store.Domain.Entities.ProductGroup", b =>
                 {
                     b.HasOne("Store.Domain.Entities.ProductGroup", null)
@@ -394,11 +314,7 @@ namespace Store.Infrastructure.Migrations
 
             modelBuilder.Entity("Store.Domain.Entities.ProductGroup", b =>
                 {
-                    b.Navigation("group");
-
                     b.Navigation("productGroups");
-
-                    b.Navigation("subGroup");
                 });
 
             modelBuilder.Entity("Store.Domain.Entities.Role", b =>
@@ -410,8 +326,6 @@ namespace Store.Infrastructure.Migrations
 
             modelBuilder.Entity("Store.Domain.Entities.User", b =>
                 {
-                    b.Navigation("products");
-
                     b.Navigation("userRoles");
 
                     b.Navigation("wallets");

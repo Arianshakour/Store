@@ -21,6 +21,8 @@ namespace Store.Infrastructure.Context
         public DbSet<WalletType> WalletTypes { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<ProductGroup> ProductGroups { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Wallet>()
@@ -32,6 +34,9 @@ namespace Store.Infrastructure.Context
             //in khat bala kole query haei ke toosh user boode ra ba in shart yki mikone
             //age ino nakhai bayad to query ino bezari .IgnoreQueryFilters()
             modelBuilder.Entity<Role>().HasQueryFilter(x => x.Dlt == false);
+
+            modelBuilder.Entity<ProductGroup>().HasQueryFilter(x => x.Dlt == false);
+
         }
     }
 }

@@ -22,5 +22,6 @@ namespace Store.Domain.Entities
 
         public List<UserRole> userRoles { get; set; }
         public List<Wallet> wallets { get; set; }
+        public List<Product> products { get; set; }
     }
 }
