@@ -1,0 +1,19 @@
+﻿@* @{
+    var currentArea = Context.Request.RouteValues["area"] as string;
+} *@
+
+@section script {
+    <script>
+        alert('متاسفانه شما دسترسی به این صفحه را ندارید');
+         window.location.href = '/userpanel';
+        //     var q = 'currentArea';
+        //     console.log(q);
+        // if (q === "Admin") {
+        //     // اگر در admin area بود، به صفحه admin هدایت کن
+        //     window.location.href = '/admin/home/index';
+        // } else {
+        //     // اگر در userpanel area بود، به صفحه userpanel هدایت کن
+        //     window.location.href = '/userpanel/home/index';
+        // }
+    </script>
+}

@@ -113,5 +113,10 @@ namespace Store.Application.Services.Implementations
         {
             return _permissionRepository.GetPermissionIdFromRoleId(roleId);
         }
+
+        public bool CheckPermission(int userId, int permissionId)
+        {
+            return _permissionRepository.CheckPermission(userId, permissionId);
+        }
     }
 }

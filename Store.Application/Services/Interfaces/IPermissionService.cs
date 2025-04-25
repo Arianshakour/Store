@@ -20,6 +20,7 @@ namespace Store.Application.Services.Interfaces
         //permission
         PermissionViewModel GetPermissions();
         List<int> GetPermissionIdFromRoleId(int roleId);
+        bool CheckPermission(int userId, int permissionId);
 
     }
 }

@@ -20,5 +20,6 @@ namespace Store.Infrastructure.Repositories.Interfaces
 
         List<Permission> GetPermissions();
         List<int> GetPermissionIdFromRoleId(int roleId);
+        bool CheckPermission(int userId, int permissionId);
     }
 }

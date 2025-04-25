@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Store.Application.CustomAutorize;
 using Store.Application.Services.Interfaces;
 using Store.Domain.Dtoes.AdminPanel;
 
 namespace Store.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [PermissionChecker(2)]
     public class HomeController : Controller
     {
         private readonly IUserService _userService;
@@ -25,6 +26,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
             }
             return View(model);
         }
+        [PermissionChecker(3)]
         public IActionResult Create()
         {
             ViewBag.RoleName = _permissionService.GetRoles().roleList;

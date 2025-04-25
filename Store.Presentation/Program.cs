@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Store.Application.CustomAutorize;
 using Store.Application.Services.Implementations;
 using Store.Application.Services.Interfaces;
 using Store.Infrastructure.Context;
