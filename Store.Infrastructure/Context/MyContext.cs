@@ -36,6 +36,7 @@ namespace Store.Infrastructure.Context
             modelBuilder.Entity<Role>().HasQueryFilter(x => x.Dlt == false);
 
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(x => x.Dlt == false);
+            modelBuilder.Entity<Product>().HasQueryFilter(x => x.Dlt == false);
 
         }
     }

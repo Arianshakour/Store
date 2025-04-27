@@ -25,5 +25,32 @@ namespace Store.Application.Services.Implementations
                 productGroupList = data
             };
         }
+
+        public ProductGroupViewModel GetProductGroupsParent()
+        {
+            var data = _productRepository.GetProductGroups().Where(x => x.ParentId == null).ToList();
+            return new ProductGroupViewModel()
+            {
+                productGroupList = data
+            };
+        }
+
+        public ProductGroupViewModel GetProductGroupsSub(int gid)
+        {
+            var data = _productRepository.GetProductGroups().Where(x => x.ParentId == gid).ToList();
+            return new ProductGroupViewModel()
+            {
+                productGroupList = data
+            };
+        }
+
+        public ProductViewModel GetProducts()
+        {
+            var data = _productRepository.GetProducts();
+            return new ProductViewModel()
+            {
+                productList = data
+            };
+        }
     }
 }

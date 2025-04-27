@@ -21,5 +21,10 @@ namespace Store.Infrastructure.Repositories.Implementations
         {
             return _context.ProductGroups.ToList();
         }
+
+        public List<Product> GetProducts()
+        {
+            return _context.Products.ToList();
+        }
     }
 }

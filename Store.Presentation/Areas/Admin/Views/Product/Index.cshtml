@@ -1,0 +1,72 @@
+﻿@using Store.Domain.Common.Date
+@using Store.Domain.ViewModels
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "لیست محصولات";
+}
+
+<h2>لیست محصولات</h2>
+<br />
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <a type="button" asp-area="admin" asp-controller="Product" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a>
+</div>
+<br />
+
+<div>
+    <div class="card">
+        <div class="body table-responsive">
+            @if (Model != null && Model.productList != null && Model.productList.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ایدی</th>
+                            <th>تصویر</th>
+                            <th>نام محصول</th>
+                            <th>دسته بندی</th>
+                            <th>وضعیت</th>
+                            <th>قیمت</th>
+                            <th>تاریخ ایجاد</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.productList)
+                        {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>
+                                    <img src="/SiteQaleb/UserAvatar/@item.ImageName" class="thumbnail" style="max-width: 120px" />
+                                </td>
+                                <td>@item.ProductTitle</td>
+                                <td>@item.productGroup.GroupTitle</td>
+                                <td>@item.IsValid</td>
+                                <td>@item.Price</td>
+                                <td>@item.CreateDate.ToShamsi()</td>
+                                <td>
+                                    <a asp-area="admin" asp-controller="Product" asp-action="Edit" class="text-warning" asp-route-id="@item.ProductId">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <a asp-area="admin" asp-controller="Product" asp-action="Details" class="text-warning" asp-route-id="@item.ProductId">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a asp-area="admin" asp-controller="Product" asp-action="Delete" class="text-warning" asp-route-id="@item.ProductId">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center" style="text-align:center">
+                    محصولی یافت نشد
+                </div>
+            }
+        </div>
+    </div>
+</div>

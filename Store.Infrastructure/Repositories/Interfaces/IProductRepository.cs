@@ -10,5 +10,6 @@ namespace Store.Infrastructure.Repositories.Interfaces
     public interface IProductRepository
     {
         List<ProductGroup> GetProductGroups();
+        List<Product> GetProducts();
     }
 }

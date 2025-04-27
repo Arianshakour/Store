@@ -10,5 +10,8 @@ namespace Store.Application.Services.Interfaces
     public interface IProductService
     {
         ProductGroupViewModel GetProductGroups();
+        ProductGroupViewModel GetProductGroupsParent();
+        ProductGroupViewModel GetProductGroupsSub(int gid);
+        ProductViewModel GetProducts();
     }
 }
