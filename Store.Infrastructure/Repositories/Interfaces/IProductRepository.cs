@@ -11,5 +11,10 @@ namespace Store.Infrastructure.Repositories.Interfaces
     {
         List<ProductGroup> GetProductGroups();
         List<Product> GetProducts();
+        void AddProduct(Product product);
+        void UpdateProduct(Product product);
+        void RemoveProduct(Product product);
+        Product GetProductById(int id);
+        void Save();
     }
 }

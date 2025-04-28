@@ -25,9 +25,11 @@
                             <th>تصویر</th>
                             <th>نام محصول</th>
                             <th>دسته بندی</th>
+                            <th>زیر شاخه</th>
                             <th>وضعیت</th>
                             <th>قیمت</th>
                             <th>تاریخ ایجاد</th>
+                            <th>فرد ایجاد کننده</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
@@ -41,9 +43,11 @@
                                 </td>
                                 <td>@item.ProductTitle</td>
                                 <td>@item.productGroup.GroupTitle</td>
-                                <td>@item.IsValid</td>
+                                <td>@item.subProductGroup.GroupTitle</td>
+                                <td>@(item.IsValid ? "موجود" : "موجود نیست")</td>
                                 <td>@item.Price</td>
                                 <td>@item.CreateDate.ToShamsi()</td>
+                                <td>@item.UserId</td>
                                 <td>
                                     <a asp-area="admin" asp-controller="Product" asp-action="Edit" class="text-warning" asp-route-id="@item.ProductId">
                                         <i class="fa fa-pen"></i>

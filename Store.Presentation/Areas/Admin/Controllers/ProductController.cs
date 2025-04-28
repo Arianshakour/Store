@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Store.Application.Services.Interfaces;
 using Store.Domain.Dtoes.AdminPanel.Product;
+using Store.Domain.Entities;
+using System.Security.Claims;
 
 namespace Store.Presentation.Areas.Admin.Controllers
 {
@@ -41,6 +43,8 @@ namespace Store.Presentation.Areas.Admin.Controllers
 
                 return View(create);
             }
+            create.UserId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            _productService.AddProduct(create);
             return View();
         }
     }

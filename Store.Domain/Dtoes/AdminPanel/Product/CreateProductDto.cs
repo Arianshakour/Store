@@ -33,7 +33,7 @@ namespace Store.Domain.Dtoes.AdminPanel.Product
         [Display(Name = "موجودی")]
         public int Mojodi { get; set; }
         [Display(Name = "تصویر")]
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
         [Display(Name = "تصویر")]
         public IFormFile ImgUp { get; set; }
         [Display(Name = "تاریخ درج")]

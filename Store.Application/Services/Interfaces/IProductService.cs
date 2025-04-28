@@ -1,4 +1,5 @@
-﻿using Store.Domain.ViewModels;
+﻿using Store.Domain.Dtoes.AdminPanel.Product;
+using Store.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Store.Application.Services.Interfaces
         ProductGroupViewModel GetProductGroupsParent();
         ProductGroupViewModel GetProductGroupsSub(int gid);
         ProductViewModel GetProducts();
+        void AddProduct(CreateProductDto create);
     }
 }
