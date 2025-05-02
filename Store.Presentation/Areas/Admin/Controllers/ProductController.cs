@@ -56,14 +56,14 @@ namespace Store.Presentation.Areas.Admin.Controllers
             ViewBag.GSub = new SelectList(subGroupId, "GroupId", "GroupTitle",model.SubGroup);
             return View(model);
         }
-        public IActionResult Edit(int id, int gid)
+        public IActionResult Edit(int id, int? gid)
         {
             var model = _productService.GetForEditProduct(id);
             var groupId = _productService.GetProductGroupsParent().productGroupList;
             ViewBag.GPar = new SelectList(groupId, "GroupId", "GroupTitle", model.GroupId);
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest" && gid.HasValue)
             {
-                var subGroupIdajax = _productService.GetProductGroupsSub(gid).productGroupList;
+                var subGroupIdajax = _productService.GetProductGroupsSub(gid.Value).productGroupList;
                 return Json(new { productGroupList = subGroupIdajax });
             }
             var subGroupId = _productService.GetProductGroupsSub(model.GroupId).productGroupList;

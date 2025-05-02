@@ -119,42 +119,32 @@
     <script>
         $(document).ready(function() {
             $('#GroupId').change(function() {
-                var parentGroupId = $('#GroupId').val(); // مقدار GroupId انتخاب شده
-                var productId = $('#productid').val(); // مقدار GroupId انتخاب شده
-                console.log(parentGroupId);
-                // اگر گروه انتخاب شده خالی نباشد
-                if (parentGroupId) {
-                    // ارسال درخواست Ajax به همان متد موجود در کنترلر
-                    var url = '/Admin/Product/Edit?id=' + productId + '&gid=' + parentGroupId;
-                    // var url = '@Url.Action("Edit", "Product", "Admin")';
-                    console.log(url);
-                    $.ajax({
-                        url: url,
-                        // data: { id: productId, gid: parentGroupId },
-                        type: 'GET',
-                        success: function(response) {
-                            // لیست زیرگروه‌ها را به‌روز می‌کنیم
-                            $('#SubGroupId').empty(); // پاک کردن قبلی‌ها
-                            $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>'); // گزینه پیش‌فرض
-                            console.log(response.productGroupList);
-
-                            // اضافه کردن زیرگروه‌ها به لیست
-                            //حتما index بزار وگرنه خطا میخوره
-                            $.each(response.productGroupList, function(index,item) {
-                                console.log(item);
-                                $('#SubGroupId').append('<option value="' + item.groupId + '">' + item.groupTitle + '</option>');});
-
-                        },
-                        error: function() {
-                            alert("خطا در بارگذاری زیرگروه‌ها");
-                        }
-                    });
-                } else {
-                    // اگر گروه انتخاب نشد، زیرگروه‌ها را پاک کن
+            var parentGroupId = $('#GroupId').val(); // مقدار GroupId انتخاب شده
+            console.log(parentGroupId);
+            if (!parentGroupId) {
+                $('#SubGroupId').empty();
+                $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
+                return; // اگر گروه انتخاب نشده باشد، هیچ کاری نکن
+            }
+            var productId = $('#productid').val(); // مقدار ProductId انتخاب شده
+            var url = '/Admin/Product/Edit?id=' + productId + '&gid=' + parentGroupId;
+            console.log(productId);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
                     $('#SubGroupId').empty();
                     $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
+                    $.each(response.productGroupList, function(index, item) {
+                        $('#SubGroupId').append('<option value="' + item.groupId + '">' + item.groupTitle + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', status, error);
+                    alert("خطا در بارگذاری زیرگروه‌ها");
                 }
             });
+        });
         });
 
         function readURL(input) {
