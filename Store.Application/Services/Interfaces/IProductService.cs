@@ -15,5 +15,10 @@ namespace Store.Application.Services.Interfaces
         ProductGroupViewModel GetProductGroupsSub(int gid);
         ProductViewModel GetProducts();
         void AddProduct(CreateProductDto create);
+        DetailsProductDto DetailsProduct(int id);
+        EditProductDto GetForEditProduct(int id);
+        void UpdateProduct(EditProductDto edit);
+        DeleteProductDto GetForDeleteProduct(int id);
+        void DeleteProduct(DeleteProductDto delete);
     }
 }

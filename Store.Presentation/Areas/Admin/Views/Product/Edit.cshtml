@@ -1,8 +1,8 @@
 ﻿@using Store.Domain.Dtoes.AdminPanel.Product
-@model CreateProductDto
+@model EditProductDto
 
 @{
-    ViewData["Title"] = "ایجاد محصول";
+    ViewData["Title"] = "ویرایش محصول";
 }
 
 <div class="row clearfix">
@@ -10,9 +10,11 @@
         <div class="card">
             <div class="body">
                 <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="productid" asp-for="ProductId" />
+                    <input type="hidden" asp-for="@Model.ImageName" />
                     <div class="row clearfix">
                         <div class="col-lg-8">
-                            <h3>ایجاد محصول</h3>
+                            <h3>ویرایش محصول</h3>
                             <br />
                             <div>
                                 <div class="form-group">
@@ -58,14 +60,15 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label asp-for="Tags" class="control-label"></label>
-                                        <input type="text" asp-for="Tags" class="form-control" placeholder="با - جدا کنید">
+                                        <input type="text" asp-for="Tags" class="form-control" placeholder="با - جدا کنید" readonly>
                                         <span asp-validation-for="Tags"></span>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div>
-                                <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Create" class="btn btn-success m-l-15 waves-effect">ایجاد</button>
+                                <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-success m-l-15 waves-effect">بازگشت</button>
+                                <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Edit" class="btn btn-success m-l-15 waves-effect">ویرایش</button>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -75,8 +78,14 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label asp-for="ImageName" class="control-label"></label>
-                                        <input type="file" name="ImgUp" class="form-control" />
-                                        <span asp-validation-for="ImgUp"></span>
+                                        @if (Model.ImageName != null)
+                                        {
+                                            <img id="imgProduct" src="/SiteQaleb/UserAvatar/@Model.ImageName" class="thumbnail" style="max-width: 250px" />
+                                        }
+                                    </div>
+                                    <div class="w-50">
+                                        <label class="control-label">تصویر جدید (اختیاری)</label>
+                                        <input type="file" asp-for="imgUp" id="imgUp" class="form-control" />
                                     </div>
                                 </div>
                                 <div>
@@ -106,19 +115,22 @@
     </div>
 </div>
 
-@section script {
+@section Script {
     <script>
         $(document).ready(function() {
-            // وقتی که گروه تغییر کرد
             $('#GroupId').change(function() {
-                var parentGroupId = $('#GroupId').val();  // مقدار GroupId انتخاب شده
+                var parentGroupId = $('#GroupId').val(); // مقدار GroupId انتخاب شده
+                var productId = $('#productid').val(); // مقدار GroupId انتخاب شده
                 console.log(parentGroupId);
                 // اگر گروه انتخاب شده خالی نباشد
                 if (parentGroupId) {
                     // ارسال درخواست Ajax به همان متد موجود در کنترلر
+                    var url = '/Admin/Product/Edit?id=' + productId + '&gid=' + parentGroupId;
+                    // var url = '@Url.Action("Edit", "Product", "Admin")';
+                    console.log(url);
                     $.ajax({
-                        url: '@Url.Action("Create", "Product", "Admin")', 
-                        data: { gid: parentGroupId },
+                        url: url,
+                        // data: { id: productId, gid: parentGroupId },
                         type: 'GET',
                         success: function(response) {
                             // لیست زیرگروه‌ها را به‌روز می‌کنیم
@@ -144,6 +156,18 @@
                 }
             });
         });
-    </script>
 
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imgProduct').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgUp").change(function() {
+            readURL(this);
+        });
+    </script>
 }

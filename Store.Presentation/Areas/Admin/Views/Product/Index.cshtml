@@ -49,7 +49,7 @@
                                 <td>@item.CreateDate.ToShamsi()</td>
                                 <td>@item.UserId</td>
                                 <td>
-                                    <a asp-area="admin" asp-controller="Product" asp-action="Edit" class="text-warning" asp-route-id="@item.ProductId">
+                                    <a asp-area="admin" asp-controller="Product" asp-action="Edit" class="text-warning" asp-route-id="@item.ProductId" asp-route-gid="@item.GroupId">
                                         <i class="fa fa-pen"></i>
                                     </a>
                                     <a asp-area="admin" asp-controller="Product" asp-action="Details" class="text-warning" asp-route-id="@item.ProductId">
