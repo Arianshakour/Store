@@ -1,4 +1,6 @@
-﻿using Store.Domain.Entities;
+﻿using Azure;
+using Store.Domain.Entities;
+using Store.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,13 @@ namespace Store.Infrastructure.Repositories.Interfaces
     {
         List<ProductGroup> GetProductGroups();
         List<Product> GetProducts();
+        List<Product> GetLastProducts();
         void AddProduct(Product product);
         void UpdateProduct(Product product);
         void RemoveProduct(Product product);
         Product GetProductById(int id);
         void Save();
+        List<Product> ShowAllProduct(string search,string type, string orderby,
+            int startPrice, int endPrice, List<int> selectedGroups);
     }
 }

@@ -141,6 +141,35 @@ namespace Store.Application.Services.Implementations
             };
         }
 
+        public ProductViewModel ShowAllProduct(string search, string type, string orderby,
+            int startPrice, int endPrice, List<int> selectedGroups, int page, int pageSize)
+        {
+            var data = _productRepository.ShowAllProduct(search, type, orderby, startPrice, endPrice, selectedGroups);
+            int TotalRecord = data.Count();
+            if (pageSize==-1)
+            {
+                return new ProductViewModel()
+                {
+                    productList = data,
+                    pager = new Pager(TotalRecord, page, TotalRecord)
+                };
+            }
+            return new ProductViewModel()
+            {
+                productList = data.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                pager = new Pager(TotalRecord, page, pageSize)
+            };
+        }
+
+        public ProductViewModel ShowLastProduct()
+        {
+            var data = _productRepository.GetLastProducts();
+            return new ProductViewModel()
+            {
+                productList = data
+            };
+        }
+
         public void UpdateProduct(EditProductDto edit)
         {
             var p = _productRepository.GetProductById(edit.ProductId);

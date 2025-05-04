@@ -1,69 +1,44 @@
-﻿@{
+﻿@using Store.Domain.ViewModels
+@model ProductViewModel
+@{
     ViewData["Title"] = "خانه";
 }
 
 @section SearchBox
 {
-    <header style="color:black;">
-        @* <a href="" class="logo"><img src="/SiteQaleb/images/logo.png"></a> *@
-        <h1> فروشگاه اینترنتی آترین </h1>
-        <h2> ببینید و با خیال آسوده آنلاین خرید کنید </h2>
-        <h3> با بالاترین کیفیت پارچه و دوخت </h3>
-    </header>
-    <div class="search-form">
-        <form>
-            <input type="text" name="" placeholder="چی دوست داری بخری ؟">
-            <button><i class="zmdi zmdi-search"></i></button>
-        </form>
-    </div>
+<header style="color:black;">
+    @* <a href="" class="logo"><img src="/SiteQaleb/images/logo.png"></a> *@
+    <h1> فروشگاه اینترنتی آترین </h1>
+    <h2> ببینید و با خیال آسوده آنلاین خرید کنید </h2>
+    <h3> با بالاترین کیفیت پارچه و دوخت </h3>
+</header>
+<div class="search-form">
+    <form>
+        <input type="text" name="" placeholder="چی دوست داری بخری ؟">
+        <button><i class="zmdi zmdi-search"></i></button>
+    </form>
+</div>
 }
 <main id="home-page">
     <div class="container">
         <section class="terms-items">
             <header>
                 <h2> آخرین محصولات فروشگاه </h2>
-                <a href=""> مشاهده همه محصولات </a>
+                <a asp-controller="Home" asp-action="Archive"> مشاهده همه محصولات </a>
             </header>
             <div class="row">
                 <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="/SiteQaleb/images/pic/1.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="/SiteQaleb/images/pic/2.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="/SiteQaleb/images/pic/3.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> 150.000 تومان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="/SiteQaleb/images/pic/4.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
+                @foreach(var item in Model.productList)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+                        <article>
+                            <a href="" class="img-layer"><img src="/SiteQaleb/UserAvatar/@item.ImageName"></a>
+                            <h2><a href=""> @item.ProductTitle </a></h2>
+                            <span> @item.Price </span>
+                            <i>@item.productGroup.GroupTitle</i>
+                        </article>
+                    </div>
+                }
                 <!-- /col -->
             </div>
         </section>

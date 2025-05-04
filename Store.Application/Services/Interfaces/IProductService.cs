@@ -20,5 +20,8 @@ namespace Store.Application.Services.Interfaces
         void UpdateProduct(EditProductDto edit);
         DeleteProductDto GetForDeleteProduct(int id);
         void DeleteProduct(DeleteProductDto delete);
+        ProductViewModel ShowLastProduct();
+        ProductViewModel ShowAllProduct(string search, string type, string orderby,
+            int startPrice, int endPrice, List<int> selectedGroups, int page, int pageSize);
     }
 }

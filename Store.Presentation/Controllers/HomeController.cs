@@ -1,16 +1,23 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Store.Application.Services.Interfaces;
 using Store.Presentation.Models;
 
 namespace Store.Presentation.Controllers;
 
 public class HomeController : Controller
 {
-    public HomeController()
+    private readonly IProductService _productService;
+    public HomeController(IProductService productService)
     {
-        
+        _productService = productService;
     }
     public IActionResult Index()
+    {
+        var model = _productService.ShowLastProduct();
+        return View(model);
+    }
+    public IActionResult Archive()
     {
         return View();
     }
