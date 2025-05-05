@@ -63,7 +63,7 @@ namespace Store.Infrastructure.Repositories.Implementations
         public List<Product> ShowAllProduct(string search, string type, string orderby,
             int startPrice, int endPrice, List<int> selectedGroups)
         {
-            var data = _context.Products.AsQueryable();
+            var data = _context.Products.Include(x=>x.productGroup).Include(x=>x.subProductGroup).AsQueryable();
             if (!string.IsNullOrEmpty(search))
             {
                 data = data.Where(x => x.ProductTitle.Contains(search));
@@ -105,14 +105,15 @@ namespace Store.Infrastructure.Repositories.Implementations
 
             if (endPrice > 0)
             {
-                data = data.Where(c => c.Price < startPrice);
+                data = data.Where(c => c.Price < endPrice);
             }
             if(selectedGroups !=null && selectedGroups.Any())
             {
-                foreach(var groupid in selectedGroups)
-                {
-                    data = data.Where(x => x.GroupId == groupid || x.SubGroup == groupid);
-                }
+                //foreach(var groupid in selectedGroups)
+                //{
+                //    data = data.Where(x => x.GroupId == groupid || x.SubGroup == groupid);
+                //}
+                data = data.Where(x => selectedGroups.Contains(x.GroupId) || selectedGroups.Contains((int)x.SubGroup));
             }
             return data.ToList();
         }
