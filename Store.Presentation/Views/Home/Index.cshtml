@@ -32,8 +32,8 @@
                 {
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
                         <article>
-                            <a href="" class="img-layer"><img src="/SiteQaleb/UserAvatar/@item.ImageName"></a>
-                            <h2><a href=""> @item.ProductTitle </a></h2>
+                            <a asp-controller="Home" asp-action="ShowProduct" asp-route-id="@item.ProductId" class="img-layer"><img src="/SiteQaleb/UserAvatar/@item.ImageName"></a>
+                            <h2><a asp-controller="Home" asp-action="ShowProduct" asp-route-id="@item.ProductId"> @item.ProductTitle </a></h2>
                             <span> @item.Price </span>
                             <i>@item.productGroup.GroupTitle</i>
                         </article>

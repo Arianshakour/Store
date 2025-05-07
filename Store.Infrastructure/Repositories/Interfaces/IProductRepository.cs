@@ -18,6 +18,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
         void UpdateProduct(Product product);
         void RemoveProduct(Product product);
         Product GetProductById(int id);
+        ProductGroup GetProductGroupById(int id);
         void Save();
         List<Product> ShowAllProduct(string search,string type, string orderby,
             int startPrice, int endPrice, List<int> selectedGroups);

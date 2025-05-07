@@ -105,6 +105,23 @@ namespace Store.Application.Services.Implementations
             };
         }
 
+        public List<string> GetGroupTitlesById(List<int> groupIds)
+        {
+            var data = _productRepository.GetProductGroups();
+            var dataJustTitle = data.Where(g => groupIds.Contains(g.GroupId))
+            .Select(g => g.GroupTitle).ToList();
+            return dataJustTitle;
+        }
+
+        public ProductGroupViewModel GetProductGroup(int id)
+        {
+            var p = _productRepository.GetProductGroupById(id);
+            return new ProductGroupViewModel()
+            {
+                productGroup = p
+            };
+        }
+
         public ProductGroupViewModel GetProductGroups()
         {
             var data = _productRepository.GetProductGroups();
@@ -167,6 +184,15 @@ namespace Store.Application.Services.Implementations
             return new ProductViewModel()
             {
                 productList = data
+            };
+        }
+
+        public ProductViewModel ShowProduct(int id)
+        {
+            var p = _productRepository.GetProductById(id);
+            return new ProductViewModel()
+            {
+                product = p
             };
         }
 

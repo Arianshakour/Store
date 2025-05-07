@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Services.Interfaces;
 using Store.Presentation.Models;
@@ -18,13 +18,28 @@ public class HomeController : Controller
         return View(model);
     }
     public IActionResult Archive(string search, string type, string orderby,
-            int startPrice, int endPrice, List<int> selectedGroups, int page =1, int pageSize =6)
+            int startPrice, int endPrice, List<int> selectedGroups, int page = 1, int pageSize = 6)
     {
-        var model = _productService.ShowAllProduct(search,type,orderby,startPrice,endPrice,selectedGroups,page,pageSize);
+        var model = _productService.ShowAllProduct(search, type, orderby, startPrice, endPrice, selectedGroups, page, pageSize);
         ViewBag.groups = _productService.GetProductGroups().productGroupList;
+        ViewBag.search = search ?? "";
+        if (selectedGroups != null && selectedGroups.Any())
+        {
+            //ViewBag.pg = (_productService.GetProductGroup(selectedGroups.First())).productGroup.GroupTitle;
+            var titles = _productService.GetGroupTitlesById(selectedGroups);
+            ViewBag.pg = string.Join(",", titles);
+        }
+        else
+        {
+            ViewBag.pg = null;
+        }
         return View(model);
     }
-
+    public IActionResult ShowProduct(int id)
+    {
+        var model = _productService.ShowProduct(id);
+        return View(model);
+    }
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

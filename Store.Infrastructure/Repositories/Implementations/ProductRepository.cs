@@ -32,7 +32,18 @@ namespace Store.Infrastructure.Repositories.Implementations
 
         public Product GetProductById(int id)
         {
-            var p = _context.Products.FirstOrDefault(x => x.ProductId == id);
+            var p = _context.Products.Include(x => x.productGroup).Include(x=>x.subProductGroup)
+                .Include(x => x.user).FirstOrDefault(x => x.ProductId == id);
+            if (p == null)
+            {
+                throw new NullReferenceException();
+            }
+            return p;
+        }
+
+        public ProductGroup GetProductGroupById(int id)
+        {
+            var p = _context.ProductGroups.FirstOrDefault(x=>x.GroupId==id);
             if (p == null)
             {
                 throw new NullReferenceException();
@@ -66,7 +77,7 @@ namespace Store.Infrastructure.Repositories.Implementations
             var data = _context.Products.Include(x=>x.productGroup).Include(x=>x.subProductGroup).AsQueryable();
             if (!string.IsNullOrEmpty(search))
             {
-                data = data.Where(x => x.ProductTitle.Contains(search));
+                data = data.Where(x => x.ProductTitle.Contains(search) || x.Tags.Contains(search));
             }
             switch (type)
             {

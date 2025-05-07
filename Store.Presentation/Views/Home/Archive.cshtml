@@ -10,9 +10,8 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">تاپ لرن</a></li>
-            <li class="breadcrumb-item active"><a href="#">دوره ها</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> برنامه نویسی وب </li>
+            <li class="breadcrumb-item"><a href="/"> فروشگاه آترین </a></li>
+            <li class="breadcrumb-item active"><a href="#"> محصولات </a></li>
         </ul>
     </nav>
 </div>
@@ -25,7 +24,19 @@
 
             <div class="top-bar">
 
-                <header><h1> دوره های <span> برنامه نویسی وب </span> </h1> <span> @Model.productList.Count() دوره </span></header>
+                <header>
+                    <h1>
+                        محصولات @if (ViewBag.pg != null)
+                        {
+                            <span> @ViewBag.pg </span>
+                        }
+                        else
+                        {
+                            <span> @ViewBag.search </span>
+                        }
+                    </h1> <span> 
+                        @Model.productList.Count()
+                        دوره </span></header>
 
                 <div class="row">
                     <div class="col-md-4 col-sm-12 col-xs-12 pull-right">
@@ -112,8 +123,8 @@
                             {
                                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 term-col">
                                     <article>
-                                        <a href="" class="img-layer"><img src="/SiteQaleb/UserAvatar/@item.ImageName"></a>
-                                        <h2><a href=""> @item.ProductTitle </a></h2>
+                                        <a asp-controller="Home" asp-action="ShowProduct" asp-route-id="@item.ProductId" class="img-layer"><img src="/SiteQaleb/UserAvatar/@item.ImageName"></a>
+                                        <h2><a asp-controller="Home" asp-action="ShowProduct" asp-route-id="@item.ProductId"> @item.ProductTitle </a></h2>
                                         <span> @item.Price </span>
                                         <i>@item.productGroup.GroupTitle</i>
                                     </article>
