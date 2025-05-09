@@ -158,7 +158,7 @@
                         </li>
                     </ul>
 
-                    <a href=""> قیمت : @Model.product.Price.ToString("#,0") تومان </a>
+                    <a asp-action="BuyProduct" asp-route-id="@Model.product.ProductId"> قیمت : @Model.product.Price.ToString("#,0") تومان </a>
                 </div>
 
                 <article class="teacher-info">

@@ -20,8 +20,11 @@ namespace Store.Domain.Entities
         public string? UserAvatar { get; set; }
         public bool Dlt { get; set; }
 
+        //Relation
+
         public List<UserRole> userRoles { get; set; }
         public List<Wallet> wallets { get; set; }
         public List<Product> products { get; set; }
+        public List<Order> orders { get; set; }
     }
 }

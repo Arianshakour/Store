@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Services.Interfaces;
 using Store.Presentation.Models;
@@ -8,9 +9,11 @@ namespace Store.Presentation.Controllers;
 public class HomeController : Controller
 {
     private readonly IProductService _productService;
-    public HomeController(IProductService productService)
+    private readonly IOrderService _orderService;
+    public HomeController(IProductService productService, IOrderService orderService)
     {
         _productService = productService;
+        _orderService = orderService;
     }
     public IActionResult Index()
     {
@@ -40,6 +43,16 @@ public class HomeController : Controller
         var model = _productService.ShowProduct(id);
         return View(model);
     }
+    public IActionResult BuyProduct(int id)
+    {
+        int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        _orderService.AddOrder(userId, id);
+        return RedirectToAction("ShowProduct", new { id = id });
+    }
+
+
+
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

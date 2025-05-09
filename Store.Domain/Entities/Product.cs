@@ -41,6 +41,8 @@ namespace Store.Domain.Entities
         public ProductGroup subProductGroup { get; set; }
         [ForeignKey("UserId")]
         public User user { get; set; }
+        public List<OrderDetail> orderDetails { get; set; }
+
 
     }
 }

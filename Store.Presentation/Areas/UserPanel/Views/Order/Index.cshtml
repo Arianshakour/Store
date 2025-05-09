@@ -1,0 +1,59 @@
+﻿@using Store.Domain.Common.Date
+@using Store.Domain.ViewModels
+@model OrderViewModel
+
+@{
+    ViewData["Title"] = "لیست تراکنش ها";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">فروشگاه آترین</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> نمایش سفارشات </li>
+        </ul>
+    </nav>
+</div>
+
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                @await Component.InvokeAsync("SideBarUserPanel")
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> سفارشات شما </h1></header>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>شماره سفارش</th>
+                                    <th>تاریخ</th>
+                                    <th>جمع کل</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var item in Model.orderList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.OrderId
+                                        </td>
+                                        <td>
+                                            @item.CreateDate.ToShamsi()
+                                        </td>
+                                        <td>@item.OrderSum.ToString("#,0")</td>
+                                        <td>
+                                            <a asp-area="UserPanel" asp-controller="Order" asp-action="OrderDetails" asp-route-id="@item.OrderId" class="btn btn-success btn-block">جزییات سفارش</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

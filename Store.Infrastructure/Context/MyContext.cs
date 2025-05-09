@@ -23,6 +23,8 @@ namespace Store.Infrastructure.Context
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<ProductGroup> ProductGroups { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Wallet>()
@@ -37,6 +39,17 @@ namespace Store.Infrastructure.Context
 
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(x => x.Dlt == false);
             modelBuilder.Entity<Product>().HasQueryFilter(x => x.Dlt == false);
+
+            //in khataye zir baraye table haye order va orderDetail 
+            //ba in dg error nemide hengame sakht jadval ha va relation
+            //chon migoft ina ertebat daran baham va age az yki pak beshe bayad mn az on yki pak konam
+            //ma goftim nemikhad khodemoon handel mikonim
+            var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
 
         }
     }

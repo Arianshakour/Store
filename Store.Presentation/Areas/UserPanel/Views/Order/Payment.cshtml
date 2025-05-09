@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "نتیجه تراکنش";
+    var userId = ViewBag.Id;
+}
+
+<nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">فروشگاه آترین</a></li>
+        <li class="breadcrumb-item active" aria-current="page">نتیجه تراکنش</li>
+    </ul>
+</nav>
+
+<main class="client-page">
+    <div class="container-content">
+        @if (ViewBag.Success == true)
+        {
+            <div class="alert alert-success">
+                <p class="help-block">عملیات پرداخت با موفقیت انجام شد</p>
+                <p class="help-block">به صورت خودکار وارد صفحه سفارشات می شوید</p>
+            </div>
+
+            <script>
+                setTimeout(function () {
+                window.location.href = '@Url.Action("Index", "Order", new { area = "Userpanel", id = userId })';
+                }, 3000); // 3 second
+            </script>
+        }
+        else
+        {
+            <div class="alert alert-success">
+                <p class="help-block">موجودی شما کافی نیست لطفا نسبت به شارژ حساب اقدام نمایید</p>
+                <p class="help-block">به صورت خودکار به صفحه شارژ حساب منتقل می شوید</p>
+            </div>
+
+            <script>
+                setTimeout(function () {
+                window.location.href = '@Url.Action("Wallet", "Home", new { area = "Userpanel", id = userId })';
+                }, 3000); // 3 second
+            </script>
+        }
+    </div>
+</main>

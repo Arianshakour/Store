@@ -9,7 +9,7 @@
                 @foreach (var item in Model.productGroupList.Where(x => x.ParentId == null))
                 {
                 <li>
-                        <a asp-controller="Home" asp-action="Archive" asp-route-selectedGroups="@item.GroupId"> @item.GroupTitle </a>
+                        <a asp-area="" asp-controller="Home" asp-action="Archive" asp-route-selectedGroups="@item.GroupId"> @item.GroupTitle </a>
                     @if (Model.productGroupList.Any(x => x.ParentId == item.GroupId))
                     {
                     <ul>
