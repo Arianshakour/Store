@@ -113,6 +113,15 @@ namespace Store.Application.Services.Implementations
             return dataJustTitle;
         }
 
+        public ProductViewModel GetPopularProducts()
+        {
+            var data = _productRepository.GetPopularProducts();
+            return new ProductViewModel()
+            {
+                productList = data
+            };
+        }
+
         public ProductGroupViewModel GetProductGroup(int id)
         {
             var p = _productRepository.GetProductGroupById(id);

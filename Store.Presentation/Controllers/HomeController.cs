@@ -10,10 +10,12 @@ public class HomeController : Controller
 {
     private readonly IProductService _productService;
     private readonly IOrderService _orderService;
-    public HomeController(IProductService productService, IOrderService orderService)
+    private readonly IProductCommentService _productCommentService;
+    public HomeController(IProductService productService, IOrderService orderService, IProductCommentService productCommentService)
     {
         _productService = productService;
         _orderService = orderService;
+        _productCommentService = productCommentService;
     }
     public IActionResult Index()
     {
@@ -48,6 +50,11 @@ public class HomeController : Controller
         int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         _orderService.AddOrder(userId, id);
         return RedirectToAction("ShowProduct", new { id = id });
+    }
+    public IActionResult AddComment(int ProductId,int UserId,string Comment)
+    {
+        _productCommentService.AddComment(ProductId,UserId,Comment);
+        return RedirectToAction("ShowProduct", new { id = ProductId });
     }
 
 

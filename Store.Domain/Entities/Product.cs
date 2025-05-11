@@ -42,6 +42,7 @@ namespace Store.Domain.Entities
         [ForeignKey("UserId")]
         public User user { get; set; }
         public List<OrderDetail> orderDetails { get; set; }
+        public List<ProductComment> productComments { get; set; }
 
 
     }

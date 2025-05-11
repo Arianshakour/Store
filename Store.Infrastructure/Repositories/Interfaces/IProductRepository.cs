@@ -14,6 +14,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
         List<ProductGroup> GetProductGroups();
         List<Product> GetProducts();
         List<Product> GetLastProducts();
+        List<Product> GetPopularProducts();
         void AddProduct(Product product);
         void UpdateProduct(Product product);
         void RemoveProduct(Product product);

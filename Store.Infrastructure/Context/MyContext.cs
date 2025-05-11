@@ -25,6 +25,7 @@ namespace Store.Infrastructure.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<ProductComment> ProductComments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Wallet>()
@@ -39,6 +40,7 @@ namespace Store.Infrastructure.Context
 
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(x => x.Dlt == false);
             modelBuilder.Entity<Product>().HasQueryFilter(x => x.Dlt == false);
+            modelBuilder.Entity<ProductComment>().HasQueryFilter(x => x.IsShow == true);
 
             //in khataye zir baraye table haye order va orderDetail 
             //ba in dg error nemide hengame sakht jadval ha va relation

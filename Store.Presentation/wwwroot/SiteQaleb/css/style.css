@@ -369,11 +369,13 @@ main#home-page{
     box-shadow: 0 0 6px #ccc;
     background-color: #fff
 }
-.terms-items .term-col article .img-layer,
-.terms-items .term-col article .img-layer img{
-    width: 100%;
-    display: block;
-}
+    .terms-items .term-col article .img-layer,
+    .terms-items .term-col article .img-layer img {
+        width: 100%;
+        display: block;
+        height: 180px;
+        object-fit: cover;
+    }
 .terms-items .term-col article h2 a{
     width: 100%;
     display: block;

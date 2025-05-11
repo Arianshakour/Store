@@ -29,11 +29,16 @@ namespace Store.Infrastructure.Repositories.Implementations
             return _context.Products.OrderByDescending(x=>x.ProductId).
                 Include(x => x.productGroup).Include(x => x.subProductGroup).Take(8).ToList();
         }
-
+        public List<Product> GetPopularProducts()
+        {
+            return _context.Products.OrderByDescending(x => x.ProductId).
+                Include(x => x.productGroup).Include(x => x.subProductGroup)
+                .Include(x=>x.orderDetails).OrderByDescending(x=>x.orderDetails.Count()).Take(8).ToList();
+        }
         public Product GetProductById(int id)
         {
             var p = _context.Products.Include(x => x.productGroup).Include(x=>x.subProductGroup)
-                .Include(x => x.user).FirstOrDefault(x => x.ProductId == id);
+                .Include(x => x.user).Include(x=>x.productComments).FirstOrDefault(x => x.ProductId == id);
             if (p == null)
             {
                 throw new NullReferenceException();
