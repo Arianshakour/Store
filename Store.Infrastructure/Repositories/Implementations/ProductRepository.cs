@@ -24,6 +24,16 @@ namespace Store.Infrastructure.Repositories.Implementations
             _context.Products.Add(product);
         }
 
+        public void AddProductGroup(ProductGroup productGroup)
+        {
+            _context.ProductGroups.Add(productGroup);
+        }
+
+        public void DeleteProductGroup(ProductGroup productGroup)
+        {
+            _context.ProductGroups.Remove(productGroup);
+        }
+
         public List<Product> GetLastProducts()
         {
             return _context.Products.OrderByDescending(x=>x.ProductId).
@@ -48,7 +58,7 @@ namespace Store.Infrastructure.Repositories.Implementations
 
         public ProductGroup GetProductGroupById(int id)
         {
-            var p = _context.ProductGroups.FirstOrDefault(x=>x.GroupId==id);
+            var p = _context.ProductGroups.Include(x => x.productGroups).FirstOrDefault(x=>x.GroupId==id);
             if (p == null)
             {
                 throw new NullReferenceException();
@@ -58,7 +68,7 @@ namespace Store.Infrastructure.Repositories.Implementations
 
         public List<ProductGroup> GetProductGroups()
         {
-            return _context.ProductGroups.ToList();
+            return _context.ProductGroups.Include(x=>x.productGroups).ToList();
         }
 
         public List<Product> GetProducts()
@@ -137,6 +147,11 @@ namespace Store.Infrastructure.Repositories.Implementations
         public void UpdateProduct(Product product)
         {
             _context.Products.Update(product);
+        }
+
+        public void UpdateProductGroup(ProductGroup productGroup)
+        {
+            _context.ProductGroups.Add(productGroup);
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿@using Store.Domain.ViewModels
+@model ProductGroupViewModel
+
+@{
+    ViewData["Title"] = "لیست دسته بندی ها";
+}
+
+<h2>لیست دسته بندی</h2>
+<br />
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <a type="button" asp-area="admin" asp-controller="ProductGroup" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a>
+</div>
+<br />
+
+<div>
+    <div class="card">
+        <div class="body table-responsive">
+            @if (Model != null && Model.productGroupList != null && Model.productGroupList.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ایدی</th>
+                            <th>نام دسته بندی</th>
+                            <th>زیر شاخه ها</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.productGroupList)
+                        {
+                            <tr>
+                                <td>@item.GroupId</td>
+                                <td>@item.GroupTitle</td>
+                                <td>
+                                    @foreach (var group in item.productGroups)
+                                    {
+                                        <div>@group.GroupTitle</div>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-area="admin" asp-controller="ProductGroup" asp-action="Edit" class="text-warning" asp-route-id="@item.GroupId">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <a asp-area="admin" asp-controller="ProductGroup" asp-action="Delete" class="text-warning" asp-route-id="@item.GroupId">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center" style="text-align:center">
+                    دسته بندی یافت نشد
+                </div>
+            }
+        </div>
+    </div>
+</div>

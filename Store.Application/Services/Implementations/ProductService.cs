@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Store.Application.Services.Interfaces;
 using Store.Domain.Dtoes.AdminPanel.Product;
+using Store.Domain.Dtoes.AdminPanel.ProductGroup;
 using Store.Domain.Entities;
 using Store.Domain.ViewModels;
 using Store.Infrastructure.Repositories.Interfaces;
@@ -44,6 +45,80 @@ namespace Store.Application.Services.Implementations
                 ImageName = create.ImageName
             };
             _productRepository.AddProduct(p);
+            _productRepository.Save();
+        }
+
+        public void AddProductGroup(CreateProductGroupDto create)
+        {
+            var pg = new ProductGroup()
+            {
+                GroupTitle = create.GroupTitle,
+                ParentId = null,
+                Dlt = false
+            };
+            _productRepository.AddProductGroup(pg);
+            _productRepository.Save();
+            if(create.subGroups != null && create.subGroups.Any())
+            {
+                foreach(var item in create.subGroups)
+                {
+                    var sg = new ProductGroup()
+                    {
+                        GroupTitle = item,
+                        ParentId = pg.GroupId,
+                        Dlt = false
+                    };
+                    _productRepository.AddProductGroup(sg);
+                    _productRepository.Save();
+                }
+            }
+        }
+
+        public EditProductGroupDto GetProductGroupForEdit(int id)
+        {
+            var pg = _productRepository.GetProductGroupById(id);
+            return new EditProductGroupDto()
+            {
+                Id = pg.GroupId,
+                GroupTitle = pg.GroupTitle,
+                SubGroups = pg.productGroups.Select(sg => new SubGroupDto
+                {
+                    Id = sg.GroupId,
+                    GroupTitle = sg.GroupTitle
+                }).ToList()
+            };
+        }
+
+        public void UpdateProductGroup(EditProductGroupDto edit)
+        {
+            var parent = _productRepository.GetProductGroupById(edit.Id);
+            parent.GroupTitle = edit.GroupTitle;
+            //in khat zir mige ke onaei ke az form hazf kardio az database hazf kone
+            var toRemove = parent.productGroups.Where(sg => !edit.SubGroups.Any(x => x.Id == sg.GroupId)).ToList();
+            foreach(var i in toRemove)
+            {
+                _productRepository.DeleteProductGroup(i);
+            }
+            foreach (var item in edit.SubGroups)
+            {
+                if (item.Id.HasValue)
+                {
+                    //edit
+                    var existing = _productRepository.GetProductGroupById(item.Id.Value);
+                    existing.GroupTitle = item.GroupTitle;
+                }
+                else
+                {
+                    //add
+                    var n = new ProductGroup()
+                    {
+                        GroupTitle = item.GroupTitle,
+                        ParentId = parent.GroupId,
+                        Dlt = false
+                    };
+                    _productRepository.AddProductGroup(n);
+                }
+            }
             _productRepository.Save();
         }
 

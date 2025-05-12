@@ -1,4 +1,5 @@
 ﻿using Store.Domain.Dtoes.AdminPanel.Product;
+using Store.Domain.Dtoes.AdminPanel.ProductGroup;
 using Store.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,5 +28,9 @@ namespace Store.Application.Services.Interfaces
         ProductViewModel ShowProduct(int id);
         ProductViewModel ShowAllProduct(string search, string type, string orderby,
             int startPrice, int endPrice, List<int> selectedGroups, int page, int pageSize);
+
+        void AddProductGroup(CreateProductGroupDto create);
+        EditProductGroupDto GetProductGroupForEdit(int id);
+        void UpdateProductGroup(EditProductGroupDto edit);
     }
 }
