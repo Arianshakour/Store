@@ -197,10 +197,10 @@ a,i,input[type="submit"], form button{ -webkit-transition : all 0.2s linear 0s; 
 
 
 
-footer .top-footer{
-  width: 100%;
-  background-color: #26292c;
-  padding: 40px 0 20px
+footer .top-footer {
+    width: 100%;
+    background-color: #22a51f;
+    padding: 40px 0 20px
 }
 .top-footer .list{
   margin-bottom: 20px
@@ -220,16 +220,16 @@ footer .top-footer{
   border-bottom: 1px solid #404E51;
   z-index: 10
 }
-.top-footer .list header h4{
-  color: #fff;
-  font-size: 16px;
-  line-height: 20px;
-  display: inline-block;
-  background-color: #26292c;
-  z-index: 11;
-  position: relative;
-  padding-left: 20px
-}
+    .top-footer .list header h4 {
+        color: #fff;
+        font-size: 16px;
+        line-height: 20px;
+        display: inline-block;
+        background-color: #22a51f;
+        z-index: 11;
+        position: relative;
+        padding-left: 20px
+    }
 .top-footer .list ul li a{
   display: block;
   line-height: 25px;
@@ -251,9 +251,9 @@ footer .top-footer{
   right: 0;
   top: 3px
 }
-.bottom-footer{
-  background-color: #1e2023;
-  padding: 15px 0
+.bottom-footer {
+    background-color: #22a51f;
+    padding: 15px 0
 }
 .bottom-footer p{
   color: #B2BFC5;
@@ -1005,6 +1005,21 @@ main#home-page{
     position: relative;
     top: 3px;
     margin-left: 3px
+}
+
+
+.ui-autocomplete {
+    font-family: 'BYekan', sans-serif; 
+    font-size: 14px;
+}
+
+.ui-menu-item {
+    font-family: 'BYekan', sans-serif; 
+    font-size: 14px;
+}
+.ui-menu-item:hover {
+    background-color: red;
+    color: black; 
 }
 
 @media screen and (max-width : 991px){

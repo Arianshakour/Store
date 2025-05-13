@@ -17,6 +17,7 @@ namespace Store.Application.Services.Interfaces
         ProductGroupViewModel GetProductGroup(int id);
         List<string> GetGroupTitlesById(List<int> groupIds);
         ProductViewModel GetProducts();
+        List<string> GetSearchSuggestions(string search);
         void AddProduct(CreateProductDto create);
         DetailsProductDto DetailsProduct(int id);
         EditProductDto GetForEditProduct(int id);
@@ -32,5 +33,7 @@ namespace Store.Application.Services.Interfaces
         void AddProductGroup(CreateProductGroupDto create);
         EditProductGroupDto GetProductGroupForEdit(int id);
         void UpdateProductGroup(EditProductGroupDto edit);
+        DeleteProductGroupDto GetProductGroupForDelete(int id);
+        void DeleteProductGroup(DeleteProductGroupDto delete);
     }
 }

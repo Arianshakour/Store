@@ -26,5 +26,6 @@ namespace Store.Infrastructure.Repositories.Interfaces
         void Save();
         List<Product> ShowAllProduct(string search,string type, string orderby,
             int startPrice, int endPrice, List<int> selectedGroups);
+        List<Product> GetSearchSuggestions(string search);
     }
 }

@@ -14,7 +14,7 @@
 </header>
 <div class="search-form">
     <form>
-        <input type="text" name="search" placeholder="چی دوست داری بخری ؟">
+            <input type="text" name="search" id="searchBox" placeholder="چی دوست داری بخری ؟">
         <button asp-controller="Home" asp-action="Archive"><i class="zmdi zmdi-search"></i></button>
     </form>
 </div>
@@ -57,3 +57,27 @@
     </div>
 </main>
 
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+            $("#searchBox").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("AutoCom", "Home")',  // اکشن سرچ پیشنهادات
+                        dataType: "json",
+                        data: {
+                            term: request.term  // عبارتی که کاربر وارد کرده است
+                        },
+                        success: function (data) {
+                            response(data);  // دریافت پیشنهادات و ارسال به جعبه جستجو
+                        }
+                    });
+                },
+                minLength: 2, // حداقل تعداد کاراکترها برای شروع جستجو
+                autoFocus: true // انتخاب خودکار اولین پیشنهاد
+                // tooye CSS ham Font ra avaz kardam .ui-autocomplete va .ui-menu-item
+            });
+        });
+
+    </script>
+}

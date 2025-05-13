@@ -121,7 +121,31 @@ namespace Store.Application.Services.Implementations
             }
             _productRepository.Save();
         }
-
+        public DeleteProductGroupDto GetProductGroupForDelete(int id)
+        {
+            var parent = _productRepository.GetProductGroupById(id);
+            return new DeleteProductGroupDto()
+            {
+                Id = parent.GroupId,
+                GroupTitle = parent.GroupTitle,
+                SubGroups = parent.productGroups.Select(x => new SubGroupDtoForDelete()
+                {
+                    Id = x.GroupId,
+                    GroupTitle = x.GroupTitle
+                }).ToList()
+            };
+        }
+        public void DeleteProductGroup(DeleteProductGroupDto delete)
+        {
+            var parent = _productRepository.GetProductGroupById(delete.Id);
+            var subToRemove = parent.productGroups.Where(sg => delete.SubGroups.Any(x => x.Id == sg.GroupId)).ToList();
+            foreach (var i in subToRemove)
+            {
+                _productRepository.DeleteProductGroup(i);
+            }
+            _productRepository.DeleteProductGroup(parent);
+            _productRepository.Save();
+        }
         public void DeleteProduct(DeleteProductDto delete)
         {
             var p = _productRepository.GetProductById(delete.ProductId);
@@ -307,6 +331,12 @@ namespace Store.Application.Services.Implementations
             p.Tags = edit.Tags;
             _productRepository.UpdateProduct(p);
             _productRepository.Save();
+        }
+
+        public List<string> GetSearchSuggestions(string search)
+        {
+            var data = _productRepository.GetSearchSuggestions(search);
+            return data.Select(x => x.ProductTitle).ToList();
         }
     }
 }

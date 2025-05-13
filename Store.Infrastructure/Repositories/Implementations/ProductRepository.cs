@@ -144,6 +144,11 @@ namespace Store.Infrastructure.Repositories.Implementations
             return data.ToList();
         }
 
+        public List<Product> GetSearchSuggestions(string search)
+        {
+            return _context.Products.Where(p => p.ProductTitle.Contains(search)).Take(10).Distinct().ToList();
+        }
+
         public void UpdateProduct(Product product)
         {
             _context.Products.Update(product);

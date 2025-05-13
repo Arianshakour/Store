@@ -48,12 +48,14 @@ namespace Store.Presentation.Areas.Admin.Controllers
         }
         public IActionResult Delete(int id)
         {
-            return View();
+            var model = _productService.GetProductGroupForDelete(id);
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Delete()
+        public IActionResult Delete(DeleteProductGroupDto delete)
         {
-            return View();
+            _productService.DeleteProductGroup(delete);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -57,6 +57,11 @@ public class HomeController : Controller
         return RedirectToAction("ShowProduct", new { id = ProductId });
     }
 
+    public IActionResult AutoCom(string term)
+    {
+        var model = _productService.GetSearchSuggestions(term);
+        return Json(model);
+    }
 
 
 
