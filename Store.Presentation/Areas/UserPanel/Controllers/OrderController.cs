@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.Services.Interfaces;
+using Store.Domain.Entities;
 using System.Security.Claims;
 
 namespace Store.Presentation.Areas.UserPanel.Controllers
@@ -42,6 +43,19 @@ namespace Store.Presentation.Areas.UserPanel.Controllers
             int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
             var model = _orderService.GetOrderForDetails(userId, id);
             return View(model);
+        }
+        public IActionResult UpdateOrderItem(int orderDetailId, int count)
+        {
+            int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            _orderService.UpdateOrderItem(orderDetailId, count);
+            return RedirectToAction("ShowOrder", new { id = userId });
+        }
+
+        public IActionResult DeleteOrderItem(int detailId)
+        {
+            int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            _orderService.DeleteOrderItem(detailId);
+            return RedirectToAction("ShowOrder", new { id = userId });
         }
     }
 }

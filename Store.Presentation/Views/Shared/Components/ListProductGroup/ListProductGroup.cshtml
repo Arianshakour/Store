@@ -15,7 +15,7 @@
                     <ul>
                         @foreach (var sub in Model.productGroupList.Where(x => x.ParentId == item.GroupId))
                         {
-                                    <li><a asp-controller="Home" asp-action="Archive" asp-route-selectedGroups="@sub.GroupId"> @sub.GroupTitle </a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="Archive" asp-route-selectedGroups="@sub.GroupId"> @sub.GroupTitle </a></li>
                         }
                     </ul>
                     }

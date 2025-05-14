@@ -3,7 +3,7 @@
 @model ProductViewModel
 
 @{
-    ViewData["Title"] = "جزییات محصول" + Model.product.ProductTitle;
+    ViewData["Title"] = "جزییات محصول " + Model.product.ProductTitle;
 }
 
 <div class="container">
@@ -130,7 +130,17 @@
                         </li>
                     </ul>
 
-                    <a asp-action="BuyProduct" asp-route-id="@Model.product.ProductId"> قیمت : @Model.product.Price.ToString("#,0") تومان </a>
+                    <a href="#" style="margin-bottom:5px;"> قیمت : @Model.product.Price.ToString("#,0") تومان </a>
+                    <button id="addToCartButton" class="btn btn-success" onclick="showQuantitySelector()" style="width:100%;">افزودن به سبد</button>
+                    <form method="post">
+                        <div id="quantitySelector" style="display: none;">
+                            <input type="hidden" name="id" value="@Model.product.ProductId" />
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="changeCount(-1)">−</button>
+                            <input type="number" id="productCount" name="count" value="1" min="0" style="width: 60px; text-align: center;" />
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="changeCount(1)">+</button>
+                            <button type="submit" asp-controller="Home" asp-action="BuyProduct" class="btn btn-success">افزودن به سبد</button>
+                        </div>
+                    </form>
                 </div>
 
                 <article class="teacher-info">
@@ -168,3 +178,29 @@
         </div>
     </section>
 </div>
+
+@section Scripts {
+    <script>
+            function showQuantitySelector() {
+            // مخفی کردن دکمه "افزودن به سبد"
+            $("#addToCartButton").hide();
+            // نمایش بخش انتخاب تعداد
+            $("#quantitySelector").show();
+        }
+
+        // تغییر تعداد با استفاده از دکمه‌های + و -
+        function changeCount(change) {
+            var input = document.getElementById("productCount");
+            var newVal = parseInt(input.value) + change;
+
+            if (newVal >= 1) {
+                input.value = newVal;
+            }
+
+            if (newVal === 0) {
+                $("#addToCartButton").show();
+                $("#quantitySelector").hide();
+            }
+        }
+    </script>
+}

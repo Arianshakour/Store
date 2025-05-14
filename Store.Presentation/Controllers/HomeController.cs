@@ -45,10 +45,11 @@ public class HomeController : Controller
         var model = _productService.ShowProduct(id);
         return View(model);
     }
-    public IActionResult BuyProduct(int id)
+    [HttpPost]
+    public IActionResult BuyProduct(int id,int count)
     {
         int userId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
-        _orderService.AddOrder(userId, id);
+        _orderService.AddOrder(userId, id,count);
         return RedirectToAction("ShowProduct", new { id = id });
     }
     public IActionResult AddComment(int ProductId,int UserId,string Comment)

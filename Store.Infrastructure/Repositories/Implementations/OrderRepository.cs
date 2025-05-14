@@ -83,6 +83,11 @@ namespace Store.Infrastructure.Repositories.Implementations
             return o;
         }
 
+        public bool HasDetail(int orderId)
+        {
+            return _context.OrderDetails.Any(od => od.OrderId == orderId);
+        }
+
         //OrderDetails
 
         public void AddDetail(OrderDetail orderDetail)
@@ -100,6 +105,16 @@ namespace Store.Infrastructure.Repositories.Implementations
         public OrderDetail? GetByOrderId(int orderId, int productId)
         {
             return _context.OrderDetails.FirstOrDefault(x => x.OrderId == orderId && x.ProductId == productId);
+        }
+        
+        public OrderDetail GetByOrderDetailId(int orderDetailId)
+        {
+            var od =  _context.OrderDetails.FirstOrDefault(x => x.DetailId == orderDetailId);
+            if (od == null)
+            {
+                throw new NullReferenceException();
+            }
+            return od;
         }
     }
 }

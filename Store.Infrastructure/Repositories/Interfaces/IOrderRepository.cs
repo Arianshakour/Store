@@ -19,11 +19,13 @@ namespace Store.Infrastructure.Repositories.Interfaces
         Order? CheckOpenOrder(int userId);
         void UpdateOrderSumPrice(int orderId);
         Order GetOrderForDetails(int userId, int orderId);
+        bool HasDetail(int orderId);
 
         //OrderDetail
         void AddDetail(OrderDetail orderDetail);
         void UpdateDetail(OrderDetail orderDetail);
         void DeleteDetail(OrderDetail orderDetail);
         OrderDetail? GetByOrderId(int orderId, int productId);
+        OrderDetail GetByOrderDetailId(int orderDetailId);
     }
 }

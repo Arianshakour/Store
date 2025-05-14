@@ -26,7 +26,7 @@ namespace Store.Application.Services.Implementations
             _userRepository = userRepository;
         }
 
-        public void AddOrder(int userId, int productId)
+        public void AddOrder(int userId, int productId, int count)
         {
             var check = _orderRepository.CheckOpenOrder(userId);
             var p = _productRepository.GetProductById(productId);
@@ -37,13 +37,13 @@ namespace Store.Application.Services.Implementations
                     UserId = userId,
                     IsFinaly = false,
                     CreateDate = DateTime.Now,
-                    OrderSum = p.Price,
+                    OrderSum = p.Price * count,
                     orderDetails = new List<OrderDetail>()
                     {
                         new OrderDetail()
                         {
                             ProductId = productId,
-                            Count = 1,
+                            Count = count,
                             Price = p.Price,
                         }
                     }
@@ -60,7 +60,7 @@ namespace Store.Application.Services.Implementations
                 var od = _orderRepository.GetByOrderId(check.OrderId, productId);
                 if(od != null)
                 {
-                    od.Count += 1;
+                    od.Count += count;
                     od.JameRadif();
                     _orderRepository.UpdateDetail(od);
                 }
@@ -69,7 +69,7 @@ namespace Store.Application.Services.Implementations
                     od = new OrderDetail()
                     {
                         OrderId = check.OrderId,
-                        Count = 1,
+                        Count = count,
                         Price = p.Price,
                         ProductId = p.ProductId
                     };
@@ -132,6 +132,35 @@ namespace Store.Application.Services.Implementations
             {
                 order = data
             };
+        }
+
+        public void UpdateOrderItem(int orderDetailId, int count)
+        {
+            var od = _orderRepository.GetByOrderDetailId(orderDetailId);
+            od.Count = count;
+            od.JameRadif();
+            _orderRepository.UpdateDetail(od);
+            _orderRepository.Save();
+            _orderRepository.UpdateOrderSumPrice(od.OrderId);
+            _orderRepository.Save();
+        }
+
+        public void DeleteOrderItem(int orderDetailId)
+        {
+            var od = _orderRepository.GetByOrderDetailId(orderDetailId);
+            _orderRepository.DeleteDetail(od);
+            _orderRepository.Save();
+            var checkDetail = _orderRepository.HasDetail(od.OrderId);
+            var o = _orderRepository.GetOrderById(od.OrderId);
+            if (!checkDetail)
+            {
+                _orderRepository.Delete(o);
+            }
+            else
+            {
+                _orderRepository.UpdateOrderSumPrice(od.OrderId);
+            }
+            _orderRepository.Save();
         }
     }
 }

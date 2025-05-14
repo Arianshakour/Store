@@ -32,6 +32,7 @@
                                         <th>تعداد</th>
                                         <th>قیمت</th>
                                         <th>جمع</th>
+                                        <th> </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,11 +43,18 @@
                                                 <a href="" target="_blank">@item.product.ProductTitle</a>
                                             </td>
                                             <td>
-                                                @item.Count
+                                                <form method="post" class="form-inline">
+                                                    <input type="hidden" name="orderDetailId" value="@item.DetailId" />
+                                                    <input type="number" name="count" value="@item.Count" min="1" class="form-control" style="width: 70px; display: inline;" />
+                                                    <button asp-area="UserPanel" asp-controller="Order" asp-action="UpdateOrderItem" type="submit" class="btn btn-sm btn-primary">بروزرسانی</button>
+                                                </form>
                                             </td>
                                             <td>@item.Price</td>
                                             <td>
                                                 @(item.RowSum.ToString("#,0"))
+                                            </td>
+                                            <td>
+                                                <a asp-area="UserPanel" asp-controller="Order" asp-action="DeleteOrderItem" asp-route-detailId="@item.DetailId" type="button" class="btn btn-sm btn-danger">❌</a>
                                             </td>
                                         </tr>
                                     }

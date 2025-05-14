@@ -9,10 +9,12 @@ namespace Store.Application.Services.Interfaces
 {
     public interface IOrderService
     {
-        void AddOrder(int userId,int productId);
+        void AddOrder(int userId,int productId, int count);
         OrderViewModel GetOrderWithFalse(int userid);
         OrderViewModel GetOrderWithTrue(int userid);
         OrderViewModel GetOrderForDetails(int userId,int orderId);
         bool FinalyOrder(int userId,int orderId);
+        void UpdateOrderItem(int orderDetailId, int count);
+        void DeleteOrderItem(int orderDetailId);
     }
 }
