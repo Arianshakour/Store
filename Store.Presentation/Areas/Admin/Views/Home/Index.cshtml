@@ -7,7 +7,8 @@
 <h2>لیست کاربران</h2>
 <br />
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
-    <a type="button" id="createBtn" asp-area="admin" asp-controller="Home" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a>
+    <a type="button" id="createBtn" onclick="openCreateUser()" class="btn btn-outline-success btn-border-radius">افزودن</a>
+    @* <a type="button" id="createBtn" asp-area="admin" asp-controller="Home" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a> *@
     <a id="showDeletedButton" class="btn btn-outline-default btn-border-radius" onclick="showDeletedUsers()"> نمایش کاربران حذف شده </a>
     <a id="backToUsersButton" class="btn btn-outline-default btn-border-radius" onclick="showAllUsers()" style="display: none;"> بازگشت به لیست کاربران </a>
     <form method="post">
@@ -24,10 +25,33 @@
     <partial name="~/Areas/Admin/Views/Home/_gridUser.cshtml" />
 </div>
 
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mymodallable">Modal title</h5>
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bodymodal">
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+
 @section script
 {
     <script>
-
+        // console.log(bootstrap.Modal.VERSION);   baraye version bootstarp hast
+        // console.log($.fn.modal);  باید یک تابع باشه، نه undefined
+        // console.log($.fn.modal.Constructor.VERSION);  باید "4.3.1" چاپ بشه
         function showDeletedUsers() {
             var del = 1;
             var url = '@Url.Action("Index", "Home", "admin")';
@@ -78,6 +102,134 @@
                         $("#gridUser").html(result);
                     }
                 }
+            });
+        }
+
+        $(document).on("click", ".pagination-link", function (e) {
+            e.preventDefault();
+            var page = $(this).attr("href");
+            var isDeleted = ($("#showDeletedButton").is(":visible")) ? 0 : 1;
+            var url = page + "&isDeleted=" + isDeleted;
+            if ($("#Search").val() != "") {
+                url += "&searchValue=" + $("#Search").val();
+            }
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (result) {
+                    if (isDeleted == 0) {
+                        $("#gridUser").empty().html(result);
+                        $("#gridUser").show();
+                        $("#gridDeletedUser").hide();
+                    } else {
+                        $("#gridDeletedUser").empty().html(result);
+                        $("#gridDeletedUser").show();
+                        $("#gridUser").hide();
+                    }
+                }
+            });
+        });
+
+        function CloseModal(){
+            $('#mymodal').hide();
+        }
+
+        function openCreateUser() {
+        $.ajax({
+            url: "/Admin/Home/Create/",
+            type: "GET",
+            data: {}
+        }).done(function (result) {
+            $('#mymodal').show();
+            $('#bodymodal').empty();
+            $('#mymodallable').html('افزودن');
+            $('#bodymodal').html(result);
+        });
+        }
+
+        function CreateUser() {
+            var formData = new FormData($('#addUserForm')[0]);//serialize faqat baraye matni hast age ax o File dari FormData bezar
+            $.ajax({
+                url: "/Admin/Home/Create/",
+                type: "Post",
+                data: formData,
+                processData: false,// baraye ine ke be jquery bgim tabdil nakon be txt chon pishfarz tabdil mikone be matni
+                contentType: false,// hatman bezar ta bezare multipart/form-data ersal beshe
+            }).done(function (result) {
+                if (result.success == false) {
+                    $('#bodymodal').html(result.view);
+                } else {
+                    $("#mymodal").hide();
+                    $("#gridUser").empty();
+                    $("#gridUser").html(result);
+                }
+            });
+        }
+        function openDetailsUser(id) {
+            $.ajax({
+                url: "/Admin/Home/Details/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('نمایش جزییات');
+                $('#bodymodal').html(result);
+            });
+        }
+
+        function openEditUser(id) {
+            $.ajax({
+                url: "/Admin/Home/Edit/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('ویرایش');
+                $('#bodymodal').html(result);
+            });
+        }
+        function EditUser() {
+            var formData = new FormData($('#editUserForm')[0]);
+            $.ajax({
+                url: "/Admin/Home/Edit/",
+                type: "Post",
+                data: formData,
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                if (result.success == false) {
+                    alert("لطفا اطلاعات را کامل پر کنید ");
+                    $('#bodymodal').html(result.view);
+                } else {
+                    $("#mymodal").hide();
+                    $("#gridUser").empty();
+                    $("#gridUser").html(result);
+                }
+            });
+        }
+        function openDeleteUser(id) {
+            $.ajax({
+                url: "/Admin/Home/Delete/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('حذف');
+                $('#bodymodal').html(result);
+            });
+        }
+        function DeleteUser() {
+            var input = $("#deleteUserForm").serialize();
+            $.ajax({
+                url: "/Admin/Home/Delete/",
+                type: "Post",
+                data: input,
+            }).done(function (result) {
+                $('#mymodal').hide();
+                $('#gridUser').html(result);
             });
         }
     </script>

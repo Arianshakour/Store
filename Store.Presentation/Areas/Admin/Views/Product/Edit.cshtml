@@ -9,7 +9,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body">
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="editProductForm">
                     <input type="hidden" id="productid" asp-for="ProductId" />
                     <input type="hidden" asp-for="@Model.ImageName" />
                     <div class="row clearfix">
@@ -67,8 +67,10 @@
                             </div>
 
                             <div>
-                                <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-success m-l-15 waves-effect">بازگشت</button>
-                                <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Edit" class="btn btn-success m-l-15 waves-effect">ویرایش</button>
+                                <button type="button" onclick="CloseModal()" class="btn btn-success m-l-15 waves-effect">بازگشت</button>
+                                @* <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-success m-l-15 waves-effect">بازگشت</button> *@
+                                <button type="button" onclick="EditProduct()" class="btn btn-success m-l-15 waves-effect">ویرایش</button>
+                                @* <button type="submit" asp-area="Admin" asp-controller="Product" asp-action="Edit" class="btn btn-success m-l-15 waves-effect">ویرایش</button> *@
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -115,49 +117,3 @@
     </div>
 </div>
 
-@section Script {
-    <script>
-        $(document).ready(function() {
-            $('#GroupId').change(function() {
-            var parentGroupId = $('#GroupId').val(); // مقدار GroupId انتخاب شده
-            console.log(parentGroupId);
-            if (!parentGroupId) {
-                $('#SubGroupId').empty();
-                $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
-                return; // اگر گروه انتخاب نشده باشد، هیچ کاری نکن
-            }
-            var productId = $('#productid').val(); // مقدار ProductId انتخاب شده
-            var url = '/Admin/Product/Edit?id=' + productId + '&gid=' + parentGroupId;
-            console.log(productId);
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(response) {
-                    $('#SubGroupId').empty();
-                    $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
-                    $.each(response.productGroupList, function(index, item) {
-                        $('#SubGroupId').append('<option value="' + item.groupId + '">' + item.groupTitle + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.log('Error:', status, error);
-                    alert("خطا در بارگذاری زیرگروه‌ها");
-                }
-            });
-        });
-        });
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#imgProduct').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        $("#imgUp").change(function() {
-            readURL(this);
-        });
-    </script>
-}

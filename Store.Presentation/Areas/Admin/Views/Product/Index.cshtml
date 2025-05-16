@@ -9,78 +9,180 @@
 <h2>لیست محصولات</h2>
 <br />
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
-    <a type="button" asp-area="admin" asp-controller="Product" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a>
+    <a type="button" onclick="openCreateProduct()" class="btn btn-outline-success btn-border-radius">افزودن</a>
+    @* <a type="button" asp-area="admin" asp-controller="Product" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a> *@
 </div>
 <br />
 
-<div>
-    <div class="card">
-        <div class="body table-responsive">
-            @if (Model != null && Model.productList != null && Model.productList.Any())
-            {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ایدی</th>
-                            <th>تصویر</th>
-                            <th>نام محصول</th>
-                            <th>دسته بندی</th>
-                            <th>زیر شاخه</th>
-                            <th>وضعیت</th>
-                            <th>قیمت</th>
-                            <th>تاریخ ایجاد</th>
-                            <th>فرد ایجاد کننده</th>
-                            <th>عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.productList)
-                        {
-                            <tr>
-                                <td>@item.ProductId</td>
-                                <td>
-                                    <img src="/SiteQaleb/UserAvatar/@item.ImageName" class="thumbnail" style="max-width: 120px" />
-                                </td>
-                                <td>@item.ProductTitle</td>
-                                <td>@item.productGroup.GroupTitle</td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.subProductGroup?.GroupTitle))
-                                    //hatman ? bezar chon age null bashe khata nakhore
-                                    {
-                                        @item.subProductGroup.GroupTitle
-                                    }
-                                    else
-                                    {
-                                        <span>ندارد</span>
-                                    }
-                                </td>
-                                <td>@(item.IsValid ? "موجود" : "موجود نیست")</td>
-                                <td>@item.Price</td>
-                                <td>@item.CreateDate.ToShamsi()</td>
-                                <td>@item.UserId</td>
-                                <td>
-                                    <a asp-area="admin" asp-controller="Product" asp-action="Edit" class="text-warning" asp-route-id="@item.ProductId">
-                                        <i class="fa fa-pen"></i>
-                                    </a>
-                                    <a asp-area="admin" asp-controller="Product" asp-action="Details" class="text-warning" asp-route-id="@item.ProductId">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a asp-area="admin" asp-controller="Product" asp-action="Delete" class="text-warning" asp-route-id="@item.ProductId">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
+<div id="gridProduct" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <partial name="~/Areas/Admin/Views/Product/_gridProduct.cshtml" />
+</div>
 
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="alert alert-info w-100 text-center" style="text-align:center">
-                    محصولی یافت نشد
-                </div>
-            }
+
+<!-- Modal -->
+<div class="modal bd-example-modal-lg" tabindex="-1" id="mymodal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mymodallable">Modal title</h5>
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bodymodal">
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div> *@
         </div>
     </div>
 </div>
+
+@section script
+{
+    <script>
+        function CloseModal(){
+            $('#mymodal').hide();
+        }
+
+        function openCreateProduct() {
+        $.ajax({
+            url: "/Admin/Product/Create/",
+            type: "GET",
+            data: {}
+        }).done(function (result) {
+            $('#mymodal').show();
+            $('#bodymodal').empty();
+            $('#mymodallable').html('افزودن');
+            $('#bodymodal').html(result);
+        });
+        }
+        //in function paein hatman bayad bad baz shodan modal benevisi chon age nanevisi in fun ejra nemishe
+        // chon document ready bayad safe kamel load beshe dar sorati ke ma safe ra load nemikonim
+        //darim ba modal baz mikonim to safe index 
+        //taze avaz kardim ba document change neveshtim
+        $(document).on('change', '#GroupId', function () {
+            var parentGroupId = $(this).val();
+            if (parentGroupId) {
+                $.ajax({
+                    url: '/Admin/Product/Create',
+                    data: { gid: parentGroupId },
+                    type: 'GET',
+                    success: function (response) {
+                        $('#SubGroupId').empty();
+                        $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
+                        $.each(response.productGroupList, function (index, item) {
+                            $('#SubGroupId').append('<option value="' + item.groupId + '">' + item.groupTitle + '</option>');
+                        });
+                    },
+                    error: function () {
+                        alert("خطا در بارگذاری زیرگروه‌ها");
+                    }
+                });
+            } else {
+                $('#SubGroupId').empty();
+                $('#SubGroupId').append('<option value="">انتخاب زیرگروه</option>');
+            }
+        });
+
+        function CreateProduct() {
+            var formData = new FormData($('#createProductForm')[0]);//serialize faqat baraye matni hast age ax o File dari FormData bezar
+            $.ajax({
+                url: "/Admin/Product/Create/",
+                type: "Post",
+                data: formData,
+                processData: false,// baraye ine ke be jquery bgim tabdil nakon be txt chon pishfarz tabdil mikone be matni
+                contentType: false,// hatman bezar ta bezare multipart/form-data ersal beshe
+            }).done(function (result) {
+                if (result.success == false) {
+                    $('#bodymodal').html(result.view);
+                } else {
+                    $("#mymodal").hide();
+                    $("#gridProduct").empty();
+                    $("#gridProduct").html(result);
+                }
+            });
+        }
+        function openDetailsProduct(id) {
+            $.ajax({
+                url: "/Admin/Product/Details/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('نمایش جزییات');
+                $('#bodymodal').html(result);
+            });
+        }
+
+        function openEditProduct(id) {
+            $.ajax({
+                url: "/Admin/Product/Edit/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('ویرایش');
+                $('#bodymodal').html(result);
+            });
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imgProduct').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(document).on('change', '#imgUp', function () {
+            readURL(this);
+        });
+
+        function EditProduct() {
+            var formData = new FormData($('#editProductForm')[0]);
+            $.ajax({
+                url: "/Admin/Product/Edit/",
+                type: "Post",
+                data: formData,
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                if (result.success == false) {
+                    alert("لطفا اطلاعات را کامل پر کنید ");
+                    $('#bodymodal').html(result.view);
+                } else {
+                    $("#mymodal").hide();
+                    $("#gridProduct").empty();
+                    $("#gridProduct").html(result);
+                }
+            });
+        }
+        function openDeleteProduct(id) {
+            $.ajax({
+                url: "/Admin/Product/Delete/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('حذف');
+                $('#bodymodal').html(result);
+            });
+        }
+        function DeleteProduct() {
+            var input = $("#deleteProductForm").serialize();
+            $.ajax({
+                url: "/Admin/Product/Delete/",
+                type: "Post",
+                data: input,
+            }).done(function (result) {
+                $('#mymodal').hide();
+                $('#gridProduct').html(result);
+            });
+        }
+    </script>
+}

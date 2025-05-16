@@ -1,0 +1,83 @@
+﻿@using Store.Domain.Common.Date
+@using Store.Domain.ViewModels
+@model ProductViewModel
+
+<div class="card">
+    <div class="body table-responsive">
+        @if (Model != null && Model.productList != null && Model.productList.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ایدی</th>
+                        <th>تصویر</th>
+                        <th>نام محصول</th>
+                        <th>دسته بندی</th>
+                        <th>زیر شاخه</th>
+                        <th>وضعیت</th>
+                        <th>قیمت</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>فرد ایجاد کننده</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.productList)
+                    {
+                        <tr>
+                            <td>@item.ProductId</td>
+                            <td>
+                                <img src="/SiteQaleb/UserAvatar/@item.ImageName" class="thumbnail" style="max-width: 120px" />
+                            </td>
+                            <td>@item.ProductTitle</td>
+                            <td>@item.productGroup.GroupTitle</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.subProductGroup?.GroupTitle))
+                                //hatman ? bezar chon age null bashe khata nakhore
+                                {
+                                    @item.subProductGroup.GroupTitle
+                                }
+                                else
+                                {
+                                    <span>ندارد</span>
+                                }
+                            </td>
+                            @* <td>@(item.IsValid ? "موجود" : "موجود نیست")</td> *@
+                            <td>
+                                @if (item.IsValid)
+                                {
+                                    <div class="badge col-green">موجود</div>
+                                }
+                                else
+                                {
+                                    <div class="badge col-green">موجود نیست</div>
+                                }
+                            </td>
+                            <td>@item.Price</td>
+                            <td>@item.CreateDate.ToShamsi()</td>
+                            <td>@item.UserId</td>
+                            <td>
+                                <a onclick="openEditProduct(@item.ProductId)" class="text-warning">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a onclick="openDetailsProduct(@item.ProductId)" class="text-warning">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a onclick="openDeleteProduct(@item.ProductId)" class="text-warning">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info w-100 text-center" style="text-align:center">
+                محصولی یافت نشد
+            </div>
+        }
+    </div>
+</div>

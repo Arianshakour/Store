@@ -22,26 +22,26 @@
             <ul class="pagination justify-content-end">
                 @if (Model.pager.CurrentPage > 1)
                 {
-                    <li class="page-item" style="background-color: #12cf77">
+                    <li class="page-item">
                         <a class="page-link pagination-link" asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-page="1">نخست</a>
                     </li>
-                    <li style="background-color: #12cf77">
+                    <li>
                         <a class="page-link pagination-link" asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-page="@(Model.pager.CurrentPage - 1)">قبلی</a>
                     </li>
                 }
                 @for (var pge = Model.pager.StartPage; pge <= Model.pager.EndPage; pge++)
                 {
-                    <li style="background-color: #12cf77" class="page-item @(pge==Model.pager.CurrentPage ? "active" : "")">
+                    <li class="page-item @(pge==Model.pager.CurrentPage ? "active" : "")">
                         <a class="page-link pagination-link" asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-page="@pge">@pge</a>
                     </li>
 
                 }
                 @if (Model.pager.CurrentPage < Model.pager.TotalPage)
                 {
-                    <li style="background-color: #12cf77" class="page-item">
+                    <li class="page-item">
                         <a class="page-link pagination-link" id="page_@Model.pager.CurrentPage" asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-page="@(Model.pager.CurrentPage + 1)">بعدی</a>
                     </li>
-                    <li style="background-color: #12cf77" class="page-item">
+                    <li class="page-item">
                         <a class="page-link pagination-link" asp-area="Admin" asp-controller="Home" asp-action="Index" asp-route-page="@(Model.pager.TotalPage)">آخرین</a>
                     </li>
                 }

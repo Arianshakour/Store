@@ -43,13 +43,16 @@
                                 @item.CreateOn.ToShamsi()
                             </td>
                             <td>
-                                <a asp-area="admin" asp-controller="Home" asp-action="Edit" class="text-warning" asp-route-id="@item.Id">
+                                <a onclick="openEditUser(@item.Id)" class="text-warning">
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a asp-area="admin" asp-controller="Home" asp-action="Details" class="text-warning" asp-route-id="@item.Id">
+                                @* <a asp-area="admin" asp-controller="Home" asp-action="Details" class="text-warning" asp-route-id="@item.Id"> *@
+                                @*     <i class="fa fa-eye"></i> *@
+                                @* </a> *@
+                                <a onclick="openDetailsUser(@item.Id)" class="text-warning">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a asp-area="admin" asp-controller="Home" asp-action="Delete" class="text-warning" asp-route-id="@item.Id">
+                                <a onclick="openDeleteUser(@item.Id)" class="text-warning">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>

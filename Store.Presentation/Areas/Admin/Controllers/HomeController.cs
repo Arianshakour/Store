@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.Application.CustomAutorize;
 using Store.Application.Services.Interfaces;
+using Store.Domain.Common.Utilities;
 using Store.Domain.Dtoes.AdminPanel;
 
 namespace Store.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [PermissionChecker(2)]
+    //[PermissionChecker(2)]
     public class HomeController : Controller
     {
         private readonly IUserService _userService;
@@ -26,11 +27,11 @@ namespace Store.Presentation.Areas.Admin.Controllers
             }
             return View(model);
         }
-        [PermissionChecker(3)]
+        //[PermissionChecker(3)]
         public IActionResult Create()
         {
             ViewBag.RoleName = _permissionService.GetRoles().roleList;
-            return View();
+            return PartialView();
         }
         [HttpPost]
         public IActionResult Create(CreateUserDto create)
@@ -38,7 +39,9 @@ namespace Store.Presentation.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.RoleName = _permissionService.GetRoles().roleList;
-                return View(create);
+                string v1 = ViewRendererUtils.RenderRazorViewToString(this, "~/Areas/Admin/Views/Home/Create.cshtml", create);
+                return Json(new { view = v1, success = false });
+                //return View(create);
             }
             _userService.AddUserForm(create);
             return RedirectToAction("Index");
@@ -47,13 +50,13 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             var model = _userService.GetUserForDetailsAdmin(id);
             ViewBag.RoleName = _permissionService.GetRoles().roleList;
-            return View(model);
+            return PartialView(model);
         }
         public IActionResult Edit(int id)
         {
             var model = _userService.GetUserForEditAdmin(id);
             ViewBag.RoleName = _permissionService.GetRoles().roleList;
-            return View(model);
+            return PartialView(model);
         }
         [HttpPost]
         public IActionResult Edit(EditUserDto edit)
@@ -61,7 +64,9 @@ namespace Store.Presentation.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.RoleName = _permissionService.GetRoles().roleList;
-                return View(edit);
+                //return View(edit);
+                string v1 = ViewRendererUtils.RenderRazorViewToString(this, "~/Areas/Admin/Views/Home/Edit.cshtml", edit);
+                return Json(new { view = v1, success = false });
             }
             _userService.EditUserAdmin(edit);
             return RedirectToAction("Index");
@@ -70,7 +75,7 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             var model = _userService.GetUserForDeleteAdmin(id);
             ViewBag.RoleName = _permissionService.GetRoles().roleList;
-            return View(model);
+            return PartialView(model);
         }
         [HttpPost]
         public IActionResult Delete(DeleteUserDto delete)

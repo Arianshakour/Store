@@ -379,8 +379,8 @@ namespace Store.Application.Services.Implementations
             }
             user.UserAvatar = edit.ImageName;
             //baraye Role ha bayad aval hame Role ha pak beshe badesh dobare insert beshe
-            //_userRepository.DeleteUserRoles(user.Id);
-            //test kardam bdoone hazf kardanam khodesh automat anjam mide
+            _userRepository.DeleteUserRoles(user.Id);
+            //hatman pak kon ta khataye CasCade nade
             //hala insert
             user.userRoles = edit.UserRoles.Select(roleId => new UserRole
             {
