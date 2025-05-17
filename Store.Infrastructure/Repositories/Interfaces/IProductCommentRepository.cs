@@ -10,6 +10,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
     public interface IProductCommentRepository
     {
         List<ProductComment> GetComments();
+        List<ProductComment> GetCommentsForProduct(int productId);
         ProductComment GetComment(int id);
         void Insert(ProductComment comment);
         void Update(ProductComment comment);

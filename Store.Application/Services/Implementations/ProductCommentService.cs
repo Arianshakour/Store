@@ -1,5 +1,6 @@
 ﻿using Store.Application.Services.Interfaces;
 using Store.Domain.Entities;
+using Store.Domain.ViewModels;
 using Store.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,15 @@ namespace Store.Application.Services.Implementations
             };
             _productCommentRepository.Insert(c);
             _productCommentRepository.Save();
+        }
+
+        public ProductCommentViewModel GetCommentsForProduct(int productId)
+        {
+            var data = _productCommentRepository.GetCommentsForProduct(productId);
+            return new ProductCommentViewModel()
+            {
+                productCommentList = data
+            };
         }
     }
 }

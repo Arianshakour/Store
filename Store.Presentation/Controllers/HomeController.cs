@@ -43,6 +43,10 @@ public class HomeController : Controller
     public IActionResult ShowProduct(int id)
     {
         var model = _productService.ShowProduct(id);
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("ShowProduct", model);
+        }
         return View(model);
     }
     [HttpPost]
@@ -52,8 +56,9 @@ public class HomeController : Controller
         _orderService.AddOrder(userId, id,count);
         return RedirectToAction("ShowProduct", new { id = id });
     }
-    public IActionResult AddComment(int ProductId,int UserId,string Comment)
+    public IActionResult AddComment(int ProductId,string Comment)
     {
+        int UserId = int.Parse(((ClaimsPrincipal)User).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         _productCommentService.AddComment(ProductId,UserId,Comment);
         return RedirectToAction("ShowProduct", new { id = ProductId });
     }

@@ -37,6 +37,11 @@ namespace Store.Infrastructure.Repositories.Implementations
             return _context.ProductComments.ToList();
         }
 
+        public List<ProductComment> GetCommentsForProduct(int productId)
+        {
+            return _context.ProductComments.Where(x=>x.product.ProductId==productId).ToList();
+        }
+
         public void Insert(ProductComment comment)
         {
             _context.ProductComments.Add(comment);
