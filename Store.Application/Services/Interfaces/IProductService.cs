@@ -17,6 +17,7 @@ namespace Store.Application.Services.Interfaces
         ProductGroupViewModel GetProductGroup(int id);
         List<string> GetGroupTitlesById(List<int> groupIds);
         ProductViewModel GetProducts();
+        ProductViewModel GetProductsInAdmin(string searchValue, int page, int pageSize);
         List<string> GetSearchSuggestions(string search);
         void AddProduct(CreateProductDto create);
         DetailsProductDto DetailsProduct(int id);

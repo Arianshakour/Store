@@ -12,6 +12,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
         List<ProductComment> GetComments();
         List<ProductComment> GetCommentsForProduct(int productId);
         ProductComment GetComment(int id);
+        ProductComment GetCommentWithIgnore(int id);
         void Insert(ProductComment comment);
         void Update(ProductComment comment);
         void Delete(ProductComment comment);

@@ -1,4 +1,5 @@
-﻿using Store.Domain.ViewModels;
+﻿using Store.Domain.Dtoes.AdminPanel.ProductComment;
+using Store.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,10 @@ namespace Store.Application.Services.Interfaces
     {
         void AddComment(int ProductId, int UserId, string Comment);
         ProductCommentViewModel GetCommentsForProduct(int productId);
+        DetailsCommentDto GetCommentForDetails(int id);
+        EditCommentDto GetCommentForEdit(int id);
+        void EditComment(EditCommentDto edit);
+        DeleteCommentDto GetCommentForDelete(int id);
+        void DeleteComment(DeleteCommentDto delete);
     }
 }

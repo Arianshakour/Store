@@ -1,4 +1,5 @@
-﻿using Store.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Domain.Entities;
 using Store.Infrastructure.Context;
 using Store.Infrastructure.Repositories.Interfaces;
 using System;
@@ -39,7 +40,17 @@ namespace Store.Infrastructure.Repositories.Implementations
 
         public List<ProductComment> GetCommentsForProduct(int productId)
         {
-            return _context.ProductComments.Where(x=>x.product.ProductId==productId).ToList();
+            return _context.ProductComments.IgnoreQueryFilters().Where(x=>x.product.ProductId==productId).ToList();
+        }
+
+        public ProductComment GetCommentWithIgnore(int id)
+        {
+            var c = _context.ProductComments.IgnoreQueryFilters().FirstOrDefault(x => x.CommentId == id);
+            if (c == null)
+            {
+                throw new NullReferenceException();
+            }
+            return c;
         }
 
         public void Insert(ProductComment comment)

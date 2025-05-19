@@ -1,0 +1,61 @@
+﻿@using Store.Domain.ViewModels
+@using Store.Domain.Common.Date
+@model ProductCommentViewModel
+
+<div class="body table-responsive">
+    @if (Model != null && Model.productCommentList != null && Model.productCommentList.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ایدی</th>
+                    <th>نظر</th>
+                    <th>وضعیت</th>
+                    <th>تاریخ ایجاد</th>
+                    <th>فرد ایجاد کننده</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.productCommentList)
+                {
+                    <tr>
+                        <td>@item.CommentId</td>
+                        <td>@item.Comment</td>
+                        @* <td>@(item.IsValid ? "موجود" : "موجود نیست")</td> *@
+                        <td>
+                            @if (item.IsShow)
+                            {
+                                <div class="badge col-green">قابل نمایش</div>
+                            }
+                            else
+                            {
+                                <div class="badge col-red">غیر قابل نمایش</div>
+                            }
+                        </td>
+                        <td>@item.CreateDate.ToShamsi()</td>
+                        <td>@item.UserId</td>
+                        <td>
+                            <a onclick="openEditComment(@item.CommentId)" class="text-warning">
+                                <i class="fa fa-pen"></i>
+                            </a>
+                            <a onclick="openDetailsComment(@item.CommentId)" class="text-warning">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a onclick="openDeleteComment(@item.CommentId)" class="text-warning">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger w-100 text-center" style="text-align:center">
+            نظری یافت نشد
+        </div>
+    }
+</div>

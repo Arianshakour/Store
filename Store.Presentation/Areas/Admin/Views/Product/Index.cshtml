@@ -11,6 +11,10 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
     <a type="button" onclick="openCreateProduct()" class="btn btn-outline-success btn-border-radius">افزودن</a>
     @* <a type="button" asp-area="admin" asp-controller="Product" asp-action="Create" class="btn btn-outline-success btn-border-radius">افزودن</a> *@
+    <form method="post">
+        <input class="form-control" name="searchValue" placeholder="عبارت مورد نظر را برای جستجو وارد کنید ..." id="Search" />
+        <button type="button" onclick="SearchBtn()" class="btn btn-primary btn-border-radius waves-effect">جستجو</button>
+    </form>
 </div>
 <br />
 
@@ -42,6 +46,37 @@
 @section script
 {
     <script>
+        function SearchBtn(){
+            var search = $("#Search").val();
+            var url = '@Url.Action("Index", "Product", "admin")';
+            $.ajax({
+                url: url,
+                data: { searchValue : search ,pageSize:4 },
+                type: "Get",
+                success: function (result) {
+                    $("#gridProduct").empty();
+                    $("#gridProduct").html(result);
+                }
+            });
+        }
+
+        $(document).on("click", ".pagination-link", function (e) {
+            e.preventDefault();
+            var page = $(this).attr("href");
+            var url = page;
+            if ($("#Search").val() != "") {
+                url += "&searchValue=" + $("#Search").val();
+            }
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (result) {
+                    $("#gridProduct").empty().html(result);
+                    $("#gridProduct").show();
+                }
+            });
+        });
+
         function CloseModal(){
             $('#mymodal').hide();
         }

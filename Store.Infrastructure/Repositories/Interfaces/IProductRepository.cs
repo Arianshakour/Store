@@ -13,6 +13,7 @@ namespace Store.Infrastructure.Repositories.Interfaces
     {
         List<ProductGroup> GetProductGroups();
         List<Product> GetProducts();
+        List<Product> GetProductsInAdmin(string searchValue);
         List<Product> GetLastProducts();
         List<Product> GetPopularProducts();
         void AddProductGroup(ProductGroup productGroup);

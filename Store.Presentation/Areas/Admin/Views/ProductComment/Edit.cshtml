@@ -1,0 +1,46 @@
+﻿@using Store.Domain.Dtoes.AdminPanel.ProductComment
+@model EditCommentDto
+
+@{
+    ViewData["Title"] = "ویرایش نظر";
+}
+
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <form method="post" id="editCommentForm">
+                    <div class="row clearfix">
+                        <div class="col-lg-8">
+                            <h3>ویرایش نظر</h3>
+                            <input type="hidden" asp-for="CommentId" />
+                            <br />
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="Comment" class="control-label"></label>
+                                        <input type="text" asp-for="Comment" class="form-control">
+                                        <span asp-validation-for="Comment"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label asp-for="IsShow" class="control-label"></label>
+                                        <input type="checkbox" asp-for="IsShow" class="form-control">
+                                        <span asp-validation-for="IsShow"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" onclick="editComment()" class="btn btn-success m-l-15 waves-effect">ویرایش</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

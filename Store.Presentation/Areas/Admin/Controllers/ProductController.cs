@@ -16,9 +16,9 @@ namespace Store.Presentation.Areas.Admin.Controllers
         {
             _productService = productService;
         }
-        public IActionResult Index()
+        public IActionResult Index(string searchValue, int page = 1, int pageSize = 4)
         {
-            var model = _productService.GetProducts();
+            var model = _productService.GetProductsInAdmin(searchValue, page, pageSize);
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("~/areas/admin/Views/Product/_gridProduct.cshtml", model);

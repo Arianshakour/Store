@@ -76,6 +76,19 @@ namespace Store.Infrastructure.Repositories.Implementations
             return _context.Products.Include(x=>x.productGroup).Include(x=>x.subProductGroup).ToList();
         }
 
+        public List<Product> GetProductsInAdmin(string searchValue)
+        {
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                return _context.Products.Where(x=>x.ProductTitle.Contains(searchValue))
+                    .Include(x => x.productGroup).Include(x => x.subProductGroup).ToList();
+            }
+            else
+            {
+                return _context.Products.Include(x => x.productGroup).Include(x => x.subProductGroup).ToList();
+            }
+            
+        }
         public void RemoveProduct(Product product)
         {
             _context.Products.Remove(product);

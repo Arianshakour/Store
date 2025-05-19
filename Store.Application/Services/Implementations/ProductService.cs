@@ -266,6 +266,17 @@ namespace Store.Application.Services.Implementations
             };
         }
 
+        public ProductViewModel GetProductsInAdmin(string searchValue, int page, int pageSize)
+        {
+            var data = _productRepository.GetProductsInAdmin(searchValue);
+            int dataCount = data.Count();
+            return new ProductViewModel()
+            {
+                productList = data.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                pager = new Pager(dataCount, page, pageSize)
+            };
+        }
+
         public ProductViewModel ShowAllProduct(string search, string type, string orderby,
             int startPrice, int endPrice, List<int> selectedGroups, int page, int pageSize)
         {

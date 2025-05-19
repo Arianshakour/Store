@@ -10,73 +10,143 @@
 
 <br />
 
-<div>
-    <form method="post" class="d-flex">
-        <input class="form-control" name="aa" placeholder="عبارت مورد نظر را برای جستجو وارد کنید ..." id="Search" />
-        <a href="#"><i class="fa fa-search"></i></a>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+    <form method="post" class="d-flex align-items-center mb-4" id="selectProductForm">
+        <label class="control-label ms-3" style="white-space: nowrap;">انتخاب محصول</label>
+        <select name="productId" class="form-control select2" asp-items="ViewBag.ProductName">
+            <option value="">انتخاب محصول</option>
+        </select>
+        <button type="button" onclick="selectProduct()" class="btn btn-Light me-3" style="background-color:#12cf77"> انتخاب</button>
+        @* <button type="submit" asp-area="Admin" asp-controller="ProductComment" asp-action="Index" class="btn btn-Light me-3"> انتخاب</button> *@
     </form>
 </div>
-<br />
-<br />
 
-<div class="card">
-    <div class="body table-responsive">
-        @if (Model != null && Model.productCommentList != null && Model.productCommentList.Any())
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ایدی</th>
-                        <th>نظر</th>
-                        <th>وضعیت</th>
-                        <th>تاریخ ایجاد</th>
-                        <th>فرد ایجاد کننده</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.productCommentList)
-                    {
-                        <tr>
-                            <td>@item.CommentId</td>
-                            <td>@item.Comment</td>
-                            @* <td>@(item.IsValid ? "موجود" : "موجود نیست")</td> *@
-                            <td>
-                                @if (item.IsShow)
-                                {
-                                    <div class="badge col-green">قابل نمایش</div>
-                                }
-                                else
-                                {
-                                    <div class="badge col-red">غیر قابل نمایش</div>
-                                }
-                            </td>
-                            <td>@item.CreateDate.ToShamsi()</td>
-                            <td>@item.UserId</td>
-                            <td>
-                                <a onclick="openEditProduct(@item.ProductId)" class="text-warning">
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                                <a onclick="openDetailsProduct(@item.ProductId)" class="text-warning">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <a onclick="openDeleteProduct(@item.ProductId)" class="text-warning">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
+<div class="card" id="gridProductComment">
+    <partial name="~/Areas/Admin/Views/ProductComment/_gridProductComment.cshtml" />
+</div>
 
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div class="alert alert-info w-100 text-center" style="text-align:center">
-                نظری یافت نشد
+
+
+<style>
+    .select2-search__field {
+        text-align: right;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mymodallable">Modal title</h5>
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        }
+            <div class="modal-body" id="bodymodal">
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div> *@
+        </div>
     </div>
 </div>
 
-<input class="form-control" name="aa" placeholder="عبارت مورد نظر را برای جستجو وارد کنید ..." id="Search" />
+
+@section Script{
+    <script>
+            $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: "انتخاب محصول",
+                allowClear: true,
+                language: {
+                noResults: function () {
+                    return "موردی یافت نشد";
+                }
+            }
+            });
+        });
+
+
+        function selectProduct() {
+            var input = $("#selectProductForm").serialize();
+            $.ajax({
+                url: "/Admin/ProductComment/Index/",
+                type: "Post",
+                data: input,
+            }).done(function (result) {
+                $('#gridProductComment').empty();
+                $('#gridProductComment').html(result);
+            });
+        }
+
+        function CloseModal(){
+            $('#mymodal').hide();
+        }
+
+        function openEditComment(id){
+            $.ajax({
+                url: "/Admin/ProductComment/Edit/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('ویرایش');
+                $('#bodymodal').html(result);
+            });
+        }
+
+        function editComment(){
+            var input = $("#editCommentForm").serialize();
+            $.ajax({
+                url: "/Admin/ProductComment/Edit/",
+                type: "Post",
+                data: input,
+            }).done(function (result) {
+                $('#mymodal').hide();
+                $('#gridProductComment').html(result);
+            });
+        }
+
+        function openDetailsComment(id){
+            $.ajax({
+                url: "/Admin/ProductComment/Details/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('جزییات');
+                $('#bodymodal').html(result);
+            });
+        }
+
+        function openDeleteComment(id){
+            $.ajax({
+                url: "/Admin/ProductComment/Delete/" + id,
+                type: "GET",
+                data: {}
+            }).done(function (result) {
+                $('#mymodal').show();
+                $('#bodymodal').empty();
+                $('#mymodallable').html('حذف');
+                $('#bodymodal').html(result);
+            });
+        }
+
+        function deleteComment(){
+            var input = $("#deleteCommentForm").serialize();
+            $.ajax({
+                url: "/Admin/ProductComment/Delete/",
+                type: "Post",
+                data: input,
+            }).done(function (result) {
+                $('#mymodal').hide();
+                $('#gridProductComment').html(result);
+            });
+        }
+    </script>
+}
